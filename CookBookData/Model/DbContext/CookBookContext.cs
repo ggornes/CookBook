@@ -69,6 +69,10 @@ namespace CookBookData.Model.DbContext
                 .IsUnicode(false);
 
             modelBuilder.Entity<Measure>()
+                .HasIndex(e => e.name)
+                .IsUnique();
+
+            modelBuilder.Entity<Measure>()
                 .HasMany(e => e.recipeIngredients)
                 .WithOptional(e => e.measure)
                 .HasForeignKey(e => e.measureId)
@@ -81,6 +85,7 @@ namespace CookBookData.Model.DbContext
                 .IsUnicode(false);
 
         }
+    }
 
     //public class MyEntity
     //{
