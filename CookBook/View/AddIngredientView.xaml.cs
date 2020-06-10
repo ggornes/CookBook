@@ -17,8 +17,14 @@ namespace CookBook.View
     /// <summary>
     /// Interaction logic for AddIngredientView.xaml
     /// </summary>
-    public partial class AddIngredientView : Window
+    public partial class AddIngredientView
     {
+        public AddIngredientView(ViewModel.AddIngredientsViewModel addIngVM)
+        {
+            InitializeComponent();
+            DataContext = addIngVM;
+        }
+
         public AddIngredientView()
         {
             InitializeComponent();

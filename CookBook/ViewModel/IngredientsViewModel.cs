@@ -1,4 +1,5 @@
-﻿using CookBook.ViewModel.Interfaces;
+﻿using CookBook.View;
+using CookBook.ViewModel.Interfaces;
 using CookBookData.Model;
 using CookBookData.Model.DbActions;
 using System;
@@ -14,7 +15,7 @@ using System.Windows.Input;
 
 namespace CookBook.ViewModel
 {
-    class IngredientsViewModel
+    class IngredientsViewModel: INotifyPropertyChanged
     {
         private DbActions dbActions;
 
@@ -61,7 +62,10 @@ namespace CookBook.ViewModel
 
         private void OpenAddIngredientWindow(object obj)
         {
-            
+            var AddIngVM = new AddIngredientsViewModel(dbActions, ingredientItems);
+            var addIngV = new AddIngredientView(AddIngVM);
+
+            addIngV.Show();
         }
 
         private void DeleteIngredient(Object ingredient)
