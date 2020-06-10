@@ -85,6 +85,52 @@ namespace CookBookData.Model.DbActions
                 }
             }
         }
+
+
+        // WIP
+        public bool AddIngredient(Ingredient ingredient)
+        {
+            if (ingredient == null) { return false; }
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(ingredient).State = EntityState.Added;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not add new item");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
+        public object ReadIngredient(Ingredient ingredient)
+        {
+            if (ingredient == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.Ingredients.FirstOrDefault(e => e.Id == ingredient.Id || e.name == ingredient.name);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not read ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return null;
+                }
+            }
+        }
+
+        // END WIP
         #endregion
     }
 }
