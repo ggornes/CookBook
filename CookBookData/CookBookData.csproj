@@ -103,12 +103,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Migrations\202006100340436_first-migration.cs" />
     <Compile Include="Migrations\202006100340436_first-migration.designer.cs">
       <DependentUpon>202006100340436_first-migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\DbActions\DbActions.cs" />
     <Compile Include="Model\DbContext\CookBookContext.cs" />
     <Compile Include="Model\Ingredient.cs" />
     <Compile Include="Model\Measure.cs" />
@@ -121,9 +121,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\DbActions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202006100340436_first-migration.resx">
       <DependentUpon>202006100340436_first-migration.cs</DependentUpon>
