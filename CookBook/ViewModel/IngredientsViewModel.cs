@@ -52,6 +52,7 @@ namespace CookBook.ViewModel
             //Console.WriteLine(ingredientItems[0].name);
 
             DeleteIngredientCommand = new RelayCommand(DeleteIngredient);
+            EditIngredientCommand = new RelayCommand(EditIngredient);
 
         }
 
@@ -71,8 +72,22 @@ namespace CookBook.ViewModel
             }
         }
 
+        private void EditIngredient(object ingredient)
+        {
+            dbActions = new DbActions();
+
+            if(selectedIngredient != null && !string.IsNullOrEmpty(selectedIngredient.name) && !string.IsNullOrWhiteSpace(selectedIngredient.name))
+            {
+                if(dbActions.EditIngredient(new CookBookData.Model.Ingredient { Id = selectedIngredient.Id, name = selectedIngredient.name}))
+                {
+                    MessageBox.Show("Ingredient updated", "Ingredient updated", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                }
+            }
+        }
+
 
         public ICommand DeleteIngredientCommand { get; set; }
+        public ICommand EditIngredientCommand { get; set; }
 
 
         #region INotifyPropertyChanged

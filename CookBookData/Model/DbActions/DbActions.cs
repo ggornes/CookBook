@@ -21,6 +21,7 @@ namespace CookBookData.Model.DbActions
             return connection;
         }
 
+        #region Ingredient
         public object[] BrowseIngredients()
         {
 
@@ -62,5 +63,28 @@ namespace CookBookData.Model.DbActions
                 }
             }
         }
+
+        public bool EditIngredient(Ingredient ingredient)
+        {
+            if (ingredient == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(ingredient).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not edit ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+        #endregion
     }
 }
