@@ -16,10 +16,11 @@
         </Grid.ColumnDefinitions>
 
         <ListView
-            
+            x:Name="lvIngredients"            
             Grid.Column="0"
             Grid.Row="0"
             ItemsSource="{Binding ingredientItems, Mode=TwoWay}"
+            SelectedItem="{Binding selectedIngredient}"
             HorizontalAlignment="Center"
             HorizontalContentAlignment="Center"
             Width="1080">
@@ -31,6 +32,11 @@
             </ListView.View>
             
         </ListView>
+        <Label Content="Selected Ingredient" FontSize="28" HorizontalAlignment="Left" Margin="10,42,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Content="Id:" FontSize="20" HorizontalAlignment="Left" Margin="0,123,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Content="Name:" FontSize="20" HorizontalAlignment="Left" Margin="0,165,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="75,133,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False" Text="{Binding selectedIngredient.Id, Mode=TwoWay}"/>
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="75,176,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding selectedIngredient.name, Mode=TwoWay}"/>
 
     </Grid>
 </UserControl>

@@ -3,7 +3,9 @@ using CookBookData.Model.DbActions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +16,21 @@ namespace CookBook.ViewModel
         private readonly DbActions dbActions;
 
         public ObservableCollection<Ingredient> ingredientItems { get; set; }
+
+        private Ingredient _selectedIngredient;
+
+        public Ingredient selectedIngredient
+        {
+            get
+            {
+                return _selectedIngredient;
+            }
+            set
+            {
+                _selectedIngredient = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         public IngredientsViewModel()
@@ -29,10 +46,20 @@ namespace CookBook.ViewModel
                     return new Ingredient { Id = ingredient.Id, name = ingredient.name };
                 })
                 );
-            Console.WriteLine(ingredientItems[0].name);
+            //Console.WriteLine(ingredientItems[0].name);
 
         }
 
+
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string property = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
+        #endregion
+
     }
-    
+
 }
