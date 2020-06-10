@@ -53,7 +53,15 @@ namespace CookBook.ViewModel
 
             DeleteIngredientCommand = new RelayCommand(DeleteIngredient);
             EditIngredientCommand = new RelayCommand(EditIngredient);
+            AddIngredientCommand = new RelayCommand(OpenAddIngredientWindow);
 
+            
+
+        }
+
+        private void OpenAddIngredientWindow(object obj)
+        {
+            
         }
 
         private void DeleteIngredient(Object ingredient)
@@ -88,6 +96,7 @@ namespace CookBook.ViewModel
 
         public ICommand DeleteIngredientCommand { get; set; }
         public ICommand EditIngredientCommand { get; set; }
+        public ICommand AddIngredientCommand { get; set; }
 
 
         #region INotifyPropertyChanged

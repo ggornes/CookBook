@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\DbActions\DbActions.cs" />
+    <Compile Include="Model\DbActions\IDbActions.cs" />
     <Compile Include="Model\DbContext\CookBookContext.cs" />
     <Compile Include="Model\Ingredient.cs" />
     <Compile Include="Model\Measure.cs" />

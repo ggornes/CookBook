@@ -39,7 +39,7 @@
         <TextBox HorizontalAlignment="Left" Height="22" Margin="75,176,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding selectedIngredient.name, Mode=TwoWay}"/>
         <Button x:Name="btnDelete" Content="Delete" Command="{Binding DeleteIngredientCommand}" HorizontalAlignment="Left" Margin="282,195,0,0" Grid.Row="1" VerticalAlignment="Top" Width="91"/>
         <Button x:Name="btnEdit" Content="Save Changes" Command="{Binding EditIngredientCommand}" HorizontalAlignment="Left" Margin="282,161,0,0" Grid.Row="1" VerticalAlignment="Top" Width="91"/>
-        <Button x:Name="btnAdd" Content="Add New" HorizontalAlignment="Left" Margin="672,133,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnAdd" Content="Add New" Command="{Binding AddIngredientCommand}" HorizontalAlignment="Left" Margin="672,133,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
 
     </Grid>
 </UserControl>
