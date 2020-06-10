@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,26 @@ namespace CookBookData.Model.DbActions
 
         }
 
+        public bool DeleteIngredient(Ingredient ingredient)
+        {
+            if (ingredient == null) return false;
 
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(ingredient).State = EntityState.Deleted;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not delete ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CookBookData.Model;
+﻿using CookBook.ViewModel.Interfaces;
+using CookBookData.Model;
 using CookBookData.Model.DbActions;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CookBook.ViewModel
 {
     class IngredientsViewModel
     {
-        private readonly DbActions dbActions;
+        private DbActions dbActions;
 
         public ObservableCollection<Ingredient> ingredientItems { get; set; }
 
@@ -48,7 +51,28 @@ namespace CookBook.ViewModel
                 );
             //Console.WriteLine(ingredientItems[0].name);
 
+            DeleteIngredientCommand = new RelayCommand(DeleteIngredient);
+
         }
+
+        private void DeleteIngredient(Object ingredient)
+        {
+            dbActions = new DbActions();
+
+            if (selectedIngredient != null)
+            {
+                if (MessageBox.Show("Do you want to delete the selected ingredient?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    if (dbActions.DeleteIngredient(new CookBookData.Model.Ingredient { Id = selectedIngredient.Id }))
+                    {
+                        ingredientItems.Remove(selectedIngredient);
+                    }
+                }
+            }
+        }
+
+
+        public ICommand DeleteIngredientCommand { get; set; }
 
 
         #region INotifyPropertyChanged

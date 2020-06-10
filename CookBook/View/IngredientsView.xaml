@@ -37,6 +37,7 @@
         <Label Content="Name:" FontSize="20" HorizontalAlignment="Left" Margin="0,165,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="22" Margin="75,133,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False" Text="{Binding selectedIngredient.Id, Mode=TwoWay}"/>
         <TextBox HorizontalAlignment="Left" Height="22" Margin="75,176,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding selectedIngredient.name, Mode=TwoWay}"/>
+        <Button x:Name="btnDelete" Content="Delete" Command="{Binding DeleteIngredientCommand}" HorizontalAlignment="Left" Margin="412,155,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
 
     </Grid>
 </UserControl>
