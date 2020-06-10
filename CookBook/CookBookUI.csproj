@@ -118,6 +118,9 @@
     </ApplicationDefinition>
     <Compile Include="ViewModel\IngredientsViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\RelayCommand.cs" />
+    <Compile Include="View\AddIngredientView.xaml.cs">
+      <DependentUpon>AddIngredientView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\IngredientsView.xaml.cs">
       <DependentUpon>IngredientsView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\AddIngredientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\IngredientsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
