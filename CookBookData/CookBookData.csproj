@@ -104,6 +104,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Migrations\202006100340436_first-migration.cs" />
+    <Compile Include="Migrations\202006100340436_first-migration.designer.cs">
+      <DependentUpon>202006100340436_first-migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\DbContext\CookBookContext.cs" />
     <Compile Include="Model\Ingredient.cs" />
     <Compile Include="Model\Measure.cs" />
@@ -118,6 +123,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\DbActions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202006100340436_first-migration.resx">
+      <DependentUpon>202006100340436_first-migration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

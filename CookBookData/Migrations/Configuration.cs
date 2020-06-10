@@ -25,18 +25,18 @@
                 new Ingredient { Id = 1, name = "egg" },
                 new Ingredient { Id = 2, name = "salt" },
                 new Ingredient { Id = 3, name = "sugar" },
-                new Ingredient { Id = 3, name = "chocolate" },
-                new Ingredient { Id = 3, name = "vanilla extract" },
-                new Ingredient { Id = 3, name = "flour" },
-                new Ingredient { Id = 3, name = "butter" }
+                new Ingredient { Id = 4, name = "chocolate" },
+                new Ingredient { Id = 5, name = "vanilla extract" },
+                new Ingredient { Id = 6, name = "flour" },
+                new Ingredient { Id = 7, name = "butter" }
             });
 
             context.Measures.AddOrUpdate(new Measure[]
             {
                 new Measure { Id = 1, name = "Cup" },
-                new Measure { Id = 1, name = "Tea spoon" },
-                new Measure { Id = 1, name = "Table spoon" },
-                new Measure { Id = 1, name = "Grams" }
+                new Measure { Id = 2, name = "Tea spoon" },
+                new Measure { Id = 3, name = "Table spoon" },
+                new Measure { Id = 4, name = "Grams" }
             });
 
             context.Recipes.AddOrUpdate(new Recipe[]
