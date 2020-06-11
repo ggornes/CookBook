@@ -21,6 +21,115 @@ namespace CookBookData.Model.DbActions
             return connection;
         }
 
+        #region Measures
+        public object[] BrowseMeasures()
+        {
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.Measures.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not retrieve measure");
+                    Console.WriteLine(ex.Message);
+
+                    return new object[] { };
+                }
+            }
+
+        }
+
+        public bool DeleteMeasure(Measure measure)
+        {
+            if (measure == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(measure).State = EntityState.Deleted;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not delete measure");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
+        public bool EditMeasure(Measure measure)
+        {
+            if (measure == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(measure).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not edit measure");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
+        public bool AddMeasure(Measure measure)
+        {
+            if (measure == null) { return false; }
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(measure).State = EntityState.Added;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not add new measure");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
+        public object ReadMeasure(Measure measure)
+        {
+            if (measure == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.Measures.FirstOrDefault(e => e.Id == measure.Id || e.name == measure.name);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not read measure");
+                    Console.WriteLine(ex.Message);
+
+                    return null;
+                }
+            }
+        }
+
+        #endregion
+
         #region Ingredient
         public object[] BrowseIngredients()
         {
@@ -87,7 +196,6 @@ namespace CookBookData.Model.DbActions
         }
 
 
-        // WIP
         public bool AddIngredient(Ingredient ingredient)
         {
             if (ingredient == null) { return false; }
@@ -130,7 +238,6 @@ namespace CookBookData.Model.DbActions
             }
         }
 
-        // END WIP
         #endregion
     }
 }

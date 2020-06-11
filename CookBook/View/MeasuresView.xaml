@@ -1,0 +1,47 @@
+﻿<Window x:Class="CookBook.View.MeasuresVirew"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CookBook.View"
+        mc:Ignorable="d"
+        Title="MeasuresVirew" Height="800" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ListView
+            x:Name="lvMeasures"            
+            Grid.Column="0"
+            Grid.Row="1"
+            ItemsSource="{Binding measureItems, Mode=TwoWay}"
+            SelectedItem="{Binding selectedMeasure}"
+            HorizontalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Width="250">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding name}" Width="150"/>
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+        <Label Content="Selected unit of Measure" FontSize="28" HorizontalAlignment="Left" Margin="10,42,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+        <Label Content="Id:" FontSize="20" HorizontalAlignment="Left" Margin="0,123,0,0" Grid.Row="3" VerticalAlignment="Top"/>
+        <Label Content="Name:" FontSize="20" HorizontalAlignment="Left" Margin="0,165,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="75,133,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False" Text="{Binding selectedMeasure.Id, Mode=TwoWay}"/>
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="75,176,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding selectedMeasure.name, Mode=TwoWay}"/>
+        <Button x:Name="btnDelete" Content="Delete" Command="{Binding DeleteMeasureCommand}" HorizontalAlignment="Left" Margin="282,195,0,0" Grid.Row="2" VerticalAlignment="Top" Width="91"/>
+        <Button x:Name="btnEdit" Content="Save Changes" Command="{Binding EditMeasureCommand}" HorizontalAlignment="Left" Margin="282,161,0,0" Grid.Row="2" VerticalAlignment="Top" Width="91"/>
+        <Button x:Name="btnAdd" Content="Add New" Command="{Binding AddMeasureCommand}" HorizontalAlignment="Left" Margin="388,283,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75"/>
+        <Label Content="Measures" FontSize="28" HorizontalAlignment="Left" Margin="168,10,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

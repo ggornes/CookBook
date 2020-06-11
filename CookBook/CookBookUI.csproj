@@ -117,13 +117,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\AddIngredientsViewModel.cs" />
+    <Compile Include="ViewModel\AddMeasureViewModel.cs" />
     <Compile Include="ViewModel\IngredientsViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\RelayCommand.cs" />
+    <Compile Include="ViewModel\MeasuresViewModel.cs" />
     <Compile Include="View\AddIngredientView.xaml.cs">
       <DependentUpon>AddIngredientView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AddMeasureView.xaml.cs">
+      <DependentUpon>AddMeasureView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\IngredientsView.xaml.cs">
       <DependentUpon>IngredientsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MeasuresView.xaml.cs">
+      <DependentUpon>MeasuresView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -141,7 +149,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\AddMeasureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\IngredientsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MeasuresView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
