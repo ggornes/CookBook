@@ -1,0 +1,55 @@
+﻿<Window x:Class="CookBook.View.RecipeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CookBook.View"
+        mc:Ignorable="d"
+        Title="RecipeView" Height="450" Width="800">
+    <Grid>
+        <ListView
+            x:Name="lvRecipes"            
+            ItemsSource="{Binding recipeItems, Mode=TwoWay}"
+            SelectedItem="{Binding selectedRecipeItem}" Margin="10,88,621,175">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="20"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding name}" Width="80"/>
+                    <GridViewColumn Header="PrepTime" DisplayMemberBinding="{Binding prepTime}" Width="60"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView
+            x:Name="lvRecipeIngredients"            
+            ItemsSource="{Binding recipeIngredientsItems, Mode=TwoWay}"
+            SelectedItem="{Binding selectedRecipeIngredient}" Margin="264,87,312,176">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="20"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding name}" Width="80"/>
+                    <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding amount}" Width="60"/>
+                    <GridViewColumn Header="Unit" DisplayMemberBinding="{Binding measure}" Width="60"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView
+            x:Name="lvRecipeSteps"            
+            ItemsSource="{Binding recipeItems, Mode=TwoWay}"
+            SelectedItem="{Binding selectedRecipeItem}" Margin="546,88,85,175">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Step #" DisplayMemberBinding="{Binding stepNumber}" Width="50"/>
+                    <GridViewColumn Header="Instructions" DisplayMemberBinding="{Binding stepInstructions}" Width="120"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <Label Content="View Recipes" HorizontalAlignment="Left" Margin="346,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Recipes" HorizontalAlignment="Left" Margin="39,51,0,0" VerticalAlignment="Top"/>
+        <Label Content="Ingredients" HorizontalAlignment="Left" Margin="322,51,0,0" VerticalAlignment="Top"/>
+        <Label Content="Steps" HorizontalAlignment="Left" Margin="627,51,0,0" VerticalAlignment="Top" RenderTransformOrigin="12.54,0.374"/>
+
+    </Grid>
+</Window>
