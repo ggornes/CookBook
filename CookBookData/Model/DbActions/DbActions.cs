@@ -21,6 +21,28 @@ namespace CookBookData.Model.DbActions
             return connection;
         }
 
+
+        #region Measures
+        public object[] BrowseRecipes()
+        {
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.Recipes.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not retrieve Recipes");
+                    Console.WriteLine(ex.Message);
+
+                    return new object[] { };
+                }
+            }
+        }
+
+        #endregion
+
         #region Measures
         public object[] BrowseMeasures()
         {

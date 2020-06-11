@@ -50,6 +50,7 @@
         <Label Content="Recipes" HorizontalAlignment="Left" Margin="39,51,0,0" VerticalAlignment="Top"/>
         <Label Content="Ingredients" HorizontalAlignment="Left" Margin="322,51,0,0" VerticalAlignment="Top"/>
         <Label Content="Steps" HorizontalAlignment="Left" Margin="627,51,0,0" VerticalAlignment="Top" RenderTransformOrigin="12.54,0.374"/>
+        <Button Content="Read Recipe" Command="{Binding ReadRecipeCommand}" HorizontalAlignment="Left" Height="27" Margin="30,260,0,0" VerticalAlignment="Top" Width="112"/>
 
     </Grid>
 </Window>
