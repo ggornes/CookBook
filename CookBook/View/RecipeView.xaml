@@ -10,7 +10,7 @@
         <ListView
             x:Name="lvRecipes"            
             ItemsSource="{Binding recipeItems, Mode=TwoWay}"
-            SelectedItem="{Binding selectedRecipeItem}" Margin="10,88,621,175">
+            SelectedItem="{Binding selectedRecipe, Mode=TwoWay}" Margin="10,88,621,175">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="20"/>
@@ -22,8 +22,8 @@
 
         <ListView
             x:Name="lvRecipeIngredients"            
-            ItemsSource="{Binding recipeIngredientsItems, Mode=TwoWay}"
-            SelectedItem="{Binding selectedRecipeIngredient}" Margin="264,87,312,176">
+            ItemsSource="{Binding ingredientItems, Mode=TwoWay}"
+            SelectedItem="{Binding selectedRecipeIngredient, Mode=TwoWay}" Margin="264,87,312,176">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="20"/>
@@ -35,13 +35,13 @@
         </ListView>
 
         <ListView
-            x:Name="lvRecipeSteps"            
-            ItemsSource="{Binding recipeItems, Mode=TwoWay}"
-            SelectedItem="{Binding selectedRecipeItem}" Margin="546,88,85,175">
+            x:Name="lvSteps"            
+            ItemsSource="{Binding steps, Mode=TwoWay}"
+            SelectedItem="{Binding selectedStep}" Margin="551,88,80,175">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Step #" DisplayMemberBinding="{Binding stepNumber}" Width="50"/>
-                    <GridViewColumn Header="Instructions" DisplayMemberBinding="{Binding stepInstructions}" Width="120"/>
+                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding stepNumber}" Width="20"/>
+                    <GridViewColumn Header="Instructions" DisplayMemberBinding="{Binding stepInstructions}" Width="80"/>
                 </GridView>
             </ListView.View>
         </ListView>

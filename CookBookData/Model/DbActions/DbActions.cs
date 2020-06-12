@@ -22,7 +22,105 @@ namespace CookBookData.Model.DbActions
         }
 
 
-        #region Measures
+        #region RecipeIngredients
+        public object[] BrowseRecipeIngredients()
+        {
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    object result = context.RecipeIngredients.ToArray();
+
+                    return context.RecipeIngredients.ToArray();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error connecting to database: " + e.Message);
+                    return new object[] { };
+                }
+            }
+        }
+        #endregion
+
+        #region RecipeSteps
+        public object[] BrowseRecipeSteps()
+        {
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    object result = context.RecipeSteps.ToArray();
+
+                    return context.RecipeSteps.ToArray();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error connecting to database: " + e.Message);
+                    return new object[] { };
+                }
+            }
+        }
+        public object[] BrowseRecipeSteps(int selectedRecipeId)
+        {
+            Console.WriteLine("Cliecked");
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    object result = context.RecipeSteps.Where(rs => rs.recipeId == selectedRecipeId).ToArray();
+
+                    return context.RecipeSteps.Where(rs => rs.recipeId == selectedRecipeId).ToArray();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error connecting to database: " + e.Message);
+                    return new object[] { };
+                }
+            }
+
+            //using (MySqlConnection connection = GetMySqlConnection())
+            //{
+                
+            //    try
+            //    {
+            //        connection.Open();
+            //        string querySteps = "SELECT rs.stepNumber, rs.stepInstructions FROM recipes r JOIN recipe_steps rs on r.id = rs.recipeId WHERE r.id = @Id";
+            //        MySqlCommand getSteps = new MySqlCommand(querySteps, connection);
+            //        getSteps.Parameters.Add(new MySqlParameter("Id", selectedRecipeId));
+            //        MySqlDataReader stepsReader;
+            //        stepsReader = getSteps.ExecuteReader();
+            //        while (stepsReader.Read())
+            //        {
+            //            int stepNumber = stepsReader.GetInt32(0);
+            //            String stepInstruction = stepsReader.GetString(1);
+
+
+            //            // create instance of RecipeStepsUIModel and add it to a list or array
+            //            var recipeStep = new RecipeStepItem { stepNumber=stepNumber, stepInstruction=stepInstruction};
+
+            //            // recipeStepList.push(recipeStep)
+
+            //            //Console.WriteLine("Step #: {0} | Step Instruction: {1}", stepNumber, stepInstruction);
+
+
+
+                        
+            //        }
+            //        stepsReader.Close();
+            //        connection.Close();
+
+            //        return new object[] { };
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine("Error connecting to database: " + e.Message);
+            //        return new object[] { };
+            //    }
+            //}
+        }
+
+
         public object[] BrowseRecipes()
         {
             using (var context = new CookBookContext())

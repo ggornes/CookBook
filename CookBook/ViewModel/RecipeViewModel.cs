@@ -1,4 +1,5 @@
 ﻿using CookBook.ViewModel.Interfaces;
+using CookBookData;
 using CookBookData.Model;
 using CookBookData.Model.DbActions;
 using System;
@@ -18,16 +19,44 @@ namespace CookBook.ViewModel
         private DbActions dbActions;
         public ObservableCollection<Recipe> recipeItems { get; set; }
 
-        private Ingredient _selectedIngredient;
-
-
-        public Ingredient selectedIngredient
+        private ObservableCollection<RecipeStep> _steps;
+        public ObservableCollection<RecipeStep> steps
         {
-            get { return selectedIngredient; }
+            get { return _steps; }
+            set { if(_steps != value)
+                {
+                    _steps = value;
+                    OnPropertyChanged();
+                } }
+        }
+        public ObservableCollection<RecipeIngredient> ingredientItems { get; set; }
+
+        public ObservableCollection<RecipeIngredient> recipeIngredientItems { get; set; }
+
+        private Recipe _selectedRecipe;
+
+
+        public Recipe selectedRecipe
+        {
+            get { return _selectedRecipe; }
             set
             {
-                _selectedIngredient = value;
+                _selectedRecipe = value;
                 OnPropertyChanged();
+
+                // read steps and Ingredients when recipe is selected
+                if (selectedRecipe != null)
+                {
+                    var allRecipeSteps = this.dbActions.BrowseRecipeSteps(selectedRecipe.Id);
+                    steps = new ObservableCollection<RecipeStep>(
+                        allRecipeSteps.Select(obj2 =>
+                        {
+                            var recipeStep = (CookBookData.Model.RecipeStep)obj2;
+                            return new RecipeStep { stepNumber = recipeStep.stepNumber, stepInstructions = recipeStep.stepInstructions };
+                        })
+                        );
+                }
+
             }
         }
 
@@ -37,6 +66,7 @@ namespace CookBook.ViewModel
 
             ReadRecipeCommand = new RelayCommand(ReadRecipe);
 
+            
             // read form database and store all recipes in a variable
             var allRecipes = this.dbActions.BrowseRecipes();
 
@@ -48,20 +78,24 @@ namespace CookBook.ViewModel
                     return new Recipe { Id = recipe.Id, name = recipe.name, prepTime = recipe.prepTime };
                 })
                 );
+
+            // read recipeIngredients table
+            var allRecipeIngredients = dbActions.BrowseRecipeIngredients();
+
+            ingredientItems = new ObservableCollection<RecipeIngredient>(
+                allRecipeIngredients.Select(obj =>
+                {
+                    var ing = (CookBookData.Model.RecipeIngredient)obj;
+                    return new RecipeIngredient { Id = ing.Id, recipeId = ing.recipeId, ingredientId = ing.ingredientId, measureId = ing.measureId, amount = ing.amount };
+                })
+                );
+
+        }
+
+        void ReadRecipe(object obj)
+        {
             
-            void ReadRecipe(object obj)
-            {
-                // Read from database and store collections in variables
 
-                //var recipeIngredientItems = this.dbActions.BrowseRecipeIngredients();
-                //var recipeStepItems = this.dbActions.BrowseRecipeSteps();
-
-                // The List views on the Recipe View have different properties than the
-                // RecipeIngredient and RecipeStep Classes in the Models
-                // We are going to use a new UI Model to represent this objects
-                //
-                // RecipeIngredientsItem and RecipeStepsItem
-            }
         }
 
 

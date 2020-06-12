@@ -116,6 +116,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UIModels\RecipeStep.cs" />
     <Compile Include="ViewModel\AddIngredientsViewModel.cs" />
     <Compile Include="ViewModel\AddMeasureViewModel.cs" />
     <Compile Include="ViewModel\IngredientsViewModel.cs" />
@@ -197,9 +198,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UIModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CookBookData\CookBookData.csproj">
       <Project>{CD544118-57BB-4898-9B2B-14EA3785534C}</Project>
