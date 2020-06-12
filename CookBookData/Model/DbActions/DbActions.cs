@@ -21,6 +21,160 @@ namespace CookBookData.Model.DbActions
             return connection;
         }
 
+
+        #region RecipeIngredients
+        public List<object> BrowseRecipeIngredients(int selectedRecipeId)
+        {
+            List<object> allRecipeIngredients = new List<object>();
+            using (MySqlConnection connection = GetMySqlConnection())
+            {
+
+                try
+                {
+                    connection.Open();
+                    string queryRecipeIngredients = "SELECT i.name AS 'Ingredient', ri.amount AS 'Amount', mu.name AS 'Unit of Measure' FROM recipes r JOIN recipe_ingredients ri on r.id = ri.recipeId JOIN ingredients i on i.id = ri.ingredientId LEFT OUTER JOIN measures mu on mu.id = measureId WHERE r.id = @Id;";
+                    MySqlCommand getIngredients = new MySqlCommand(queryRecipeIngredients, connection);
+                    getIngredients.Parameters.Add(new MySqlParameter("Id", selectedRecipeId));
+                    MySqlDataReader ingredientsReader;
+                    ingredientsReader = getIngredients.ExecuteReader();
+                    while (ingredientsReader.Read())
+                    {
+                        String ingredientName = ingredientsReader.GetString(0);
+                        int amount = ingredientsReader.GetInt32(1);
+                        String measure = (ingredientsReader.IsDBNull(2)) ? "" : ingredientsReader.GetString(2);
+                        //if(!ingredientsReader.IsDBNull(2))
+
+                        
+
+
+
+                        // create instance of RecipeStepsUIModel and add it to a list or array
+                        var recipeIngredient = new RecipeIngredientItem { ingredientName = ingredientName, amount = amount, measure = measure };
+                        allRecipeIngredients.Add(recipeIngredient);
+
+                        // recipeStepList.push(recipeStep)
+
+                        //Console.WriteLine("Step #: {0} | Step Instruction: {1}", stepNumber, stepInstruction);
+
+
+
+
+                    }
+                    ingredientsReader.Close();
+                    connection.Close();
+
+                    //return new object[] { };
+                    return allRecipeIngredients;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error connecting to database: " + e.Message);
+                    //return new object[] { };
+                    return new List<object> { };
+                }
+            }
+        }
+        #endregion
+
+        #region RecipeSteps
+        public object[] BrowseRecipeSteps()
+        {
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    object result = context.RecipeSteps.ToArray();
+
+                    return context.RecipeSteps.ToArray();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error connecting to database: " + e.Message);
+                    return new object[] { };
+                }
+            }
+        }
+        public object[] BrowseRecipeSteps(int selectedRecipeId)
+        {
+            Console.WriteLine("Cliecked");
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    object result = context.RecipeSteps.Where(rs => rs.recipeId == selectedRecipeId).ToArray();
+
+                    return context.RecipeSteps.Where(rs => rs.recipeId == selectedRecipeId).ToArray();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error connecting to database: " + e.Message);
+                    return new object[] { };
+                }
+            }
+
+            //using (MySqlConnection connection = GetMySqlConnection())
+            //{
+                
+            //    try
+            //    {
+            //        connection.Open();
+            //        string querySteps = "SELECT rs.stepNumber, rs.stepInstructions FROM recipes r JOIN recipe_steps rs on r.id = rs.recipeId WHERE r.id = @Id";
+            //        MySqlCommand getSteps = new MySqlCommand(querySteps, connection);
+            //        getSteps.Parameters.Add(new MySqlParameter("Id", selectedRecipeId));
+            //        MySqlDataReader stepsReader;
+            //        stepsReader = getSteps.ExecuteReader();
+            //        while (stepsReader.Read())
+            //        {
+            //            int stepNumber = stepsReader.GetInt32(0);
+            //            String stepInstruction = stepsReader.GetString(1);
+
+
+            //            // create instance of RecipeStepsUIModel and add it to a list or array
+            //            var recipeStep = new RecipeStepItem { stepNumber=stepNumber, stepInstruction=stepInstruction};
+
+            //            // recipeStepList.push(recipeStep)
+
+            //            //Console.WriteLine("Step #: {0} | Step Instruction: {1}", stepNumber, stepInstruction);
+
+
+
+                        
+            //        }
+            //        stepsReader.Close();
+            //        connection.Close();
+
+            //        return new object[] { };
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine("Error connecting to database: " + e.Message);
+            //        return new object[] { };
+            //    }
+            //}
+        }
+
+
+        public object[] BrowseRecipes()
+        {
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.Recipes.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not retrieve Recipes");
+                    Console.WriteLine(ex.Message);
+
+                    return new object[] { };
+                }
+            }
+        }
+
+        #endregion
+
         #region Measures
         public object[] BrowseMeasures()
         {

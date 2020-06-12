@@ -116,11 +116,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UIModels\RecipeStep.cs" />
     <Compile Include="ViewModel\AddIngredientsViewModel.cs" />
     <Compile Include="ViewModel\AddMeasureViewModel.cs" />
     <Compile Include="ViewModel\IngredientsViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\RelayCommand.cs" />
     <Compile Include="ViewModel\MeasuresViewModel.cs" />
+    <Compile Include="ViewModel\RecipeViewModel.cs" />
     <Compile Include="View\AddIngredientView.xaml.cs">
       <DependentUpon>AddIngredientView.xaml</DependentUpon>
     </Compile>
@@ -132,6 +134,9 @@
     </Compile>
     <Compile Include="View\MeasuresView.xaml.cs">
       <DependentUpon>MeasuresView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RecipeView.xaml.cs">
+      <DependentUpon>RecipeView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -158,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MeasuresView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RecipeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,9 +198,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UIModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CookBookData\CookBookData.csproj">
       <Project>{CD544118-57BB-4898-9B2B-14EA3785534C}</Project>
