@@ -17,19 +17,35 @@ namespace CookBook.ViewModel
     public class RecipeViewModel: INotifyPropertyChanged
     {
         private DbActions dbActions;
-        public ObservableCollection<Recipe> recipeItems { get; set; }
+
+        // ingredientItems is the source of the Ingredients ListView.
+        // The itemSource is binded to the selectedRecipe
+        private ObservableCollection<RecipeIngredientItem> _ingredientItems { get; set; }
+        public ObservableCollection<RecipeIngredientItem> ingredientItems
+        { 
+            get { return _ingredientItems; }
+            set { if(_ingredientItems != value)
+                    {
+                    _ingredientItems = value;
+                        OnPropertyChanged();
+                }
+                }
+        }
 
         private ObservableCollection<RecipeStep> _steps;
         public ObservableCollection<RecipeStep> steps
         {
             get { return _steps; }
             set { if(_steps != value)
-                {
-                    _steps = value;
-                    OnPropertyChanged();
-                } }
+                    {
+                        _steps = value;
+                        OnPropertyChanged();
+                    }
+                }
         }
-        public ObservableCollection<RecipeIngredient> ingredientItems { get; set; }
+
+
+        public ObservableCollection<Recipe> recipeItems { get; set; }
 
         public ObservableCollection<RecipeIngredient> recipeIngredientItems { get; set; }
 
@@ -57,6 +73,20 @@ namespace CookBook.ViewModel
                         );
                 }
 
+                // read recipeIngredients table when recipe is selected
+                if (selectedRecipe != null)
+                {
+                    var allRecipeIngredients = dbActions.BrowseRecipeIngredients(selectedRecipe.Id);
+
+                    ingredientItems = new ObservableCollection<RecipeIngredientItem>(
+                        allRecipeIngredients.Select(obj =>
+                        {
+                            var ing = (CookBookData.RecipeIngredientItem)obj;
+                            return new RecipeIngredientItem { ingredientName = ing.ingredientName, amount = ing.amount, measure = ing.measure };
+                        })
+                        );
+                }
+
             }
         }
 
@@ -64,13 +94,13 @@ namespace CookBook.ViewModel
         {
             dbActions = new DbActions();
 
-            ReadRecipeCommand = new RelayCommand(ReadRecipe);
+            EditRecipeCommand = new RelayCommand(EditRecipe);
 
             
             // read form database and store all recipes in a variable
             var allRecipes = this.dbActions.BrowseRecipes();
 
-            // update ingredient ListView
+            // update ListView
             recipeItems = new ObservableCollection<Recipe>(
                 allRecipes.Select(obj =>
                 {
@@ -79,20 +109,11 @@ namespace CookBook.ViewModel
                 })
                 );
 
-            // read recipeIngredients table
-            var allRecipeIngredients = dbActions.BrowseRecipeIngredients();
-
-            ingredientItems = new ObservableCollection<RecipeIngredient>(
-                allRecipeIngredients.Select(obj =>
-                {
-                    var ing = (CookBookData.Model.RecipeIngredient)obj;
-                    return new RecipeIngredient { Id = ing.Id, recipeId = ing.recipeId, ingredientId = ing.ingredientId, measureId = ing.measureId, amount = ing.amount };
-                })
-                );
+            
 
         }
 
-        void ReadRecipe(object obj)
+        void EditRecipe(object obj)
         {
             
 
@@ -109,7 +130,7 @@ namespace CookBook.ViewModel
 
 
 
-        public ICommand ReadRecipeCommand { get; set; }
+        public ICommand EditRecipeCommand { get; set; }
 
 
         #region INotifyPropertyChanged

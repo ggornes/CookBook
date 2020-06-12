@@ -23,20 +23,54 @@ namespace CookBookData.Model.DbActions
 
 
         #region RecipeIngredients
-        public object[] BrowseRecipeIngredients()
+        public List<object> BrowseRecipeIngredients(int selectedRecipeId)
         {
-            using (var context = new CookBookContext())
+            List<object> allRecipeIngredients = new List<object>();
+            using (MySqlConnection connection = GetMySqlConnection())
             {
+
                 try
                 {
-                    object result = context.RecipeIngredients.ToArray();
+                    connection.Open();
+                    string queryRecipeIngredients = "SELECT i.name AS 'Ingredient', ri.amount AS 'Amount', mu.name AS 'Unit of Measure' FROM recipes r JOIN recipe_ingredients ri on r.id = ri.recipeId JOIN ingredients i on i.id = ri.ingredientId LEFT OUTER JOIN measures mu on mu.id = measureId WHERE r.id = @Id;";
+                    MySqlCommand getIngredients = new MySqlCommand(queryRecipeIngredients, connection);
+                    getIngredients.Parameters.Add(new MySqlParameter("Id", selectedRecipeId));
+                    MySqlDataReader ingredientsReader;
+                    ingredientsReader = getIngredients.ExecuteReader();
+                    while (ingredientsReader.Read())
+                    {
+                        String ingredientName = ingredientsReader.GetString(0);
+                        int amount = ingredientsReader.GetInt32(1);
+                        String measure = (ingredientsReader.IsDBNull(2)) ? "" : ingredientsReader.GetString(2);
+                        //if(!ingredientsReader.IsDBNull(2))
 
-                    return context.RecipeIngredients.ToArray();
+                        
+
+
+
+                        // create instance of RecipeStepsUIModel and add it to a list or array
+                        var recipeIngredient = new RecipeIngredientItem { ingredientName = ingredientName, amount = amount, measure = measure };
+                        allRecipeIngredients.Add(recipeIngredient);
+
+                        // recipeStepList.push(recipeStep)
+
+                        //Console.WriteLine("Step #: {0} | Step Instruction: {1}", stepNumber, stepInstruction);
+
+
+
+
+                    }
+                    ingredientsReader.Close();
+                    connection.Close();
+
+                    //return new object[] { };
+                    return allRecipeIngredients;
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("Error connecting to database: " + e.Message);
-                    return new object[] { };
+                    //return new object[] { };
+                    return new List<object> { };
                 }
             }
         }
