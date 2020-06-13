@@ -33,6 +33,20 @@ namespace CookBook.ViewModel
                 }
         }
 
+        private ObservableCollection<Ingredient> _allIngredientItems { get; set; }
+        public ObservableCollection<Ingredient> allIngredientItems
+        {
+            get { return _allIngredientItems; }
+            set
+            {
+                if (_allIngredientItems != value)
+                {
+                    _allIngredientItems = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private ObservableCollection<RecipeStep> _steps;
         public ObservableCollection<RecipeStep> steps
         {
@@ -98,6 +112,17 @@ namespace CookBook.ViewModel
                         {
                             var ing = (CookBookData.RecipeIngredientItem)obj;
                             return new RecipeIngredientItem { ingredientName = ing.ingredientName, amount = ing.amount, measure = ing.measure };
+                        })
+                        );
+
+                    // Read all Ingredients
+                    var allIngredients = dbActions.BrowseIngredients();
+
+                    allIngredientItems = new ObservableCollection<Ingredient>(
+                        allIngredients.Select(obj3 =>
+                        {
+                            var ingredient = (CookBookData.Model.Ingredient)obj3;
+                            return new Ingredient { Id = ingredient.Id, name = ingredient.name };
                         })
                         );
                 }
