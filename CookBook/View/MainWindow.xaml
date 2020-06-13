@@ -7,7 +7,7 @@
         xmlns:vw="clr-namespace:CookBook.View"
         xmlns:local="clr-namespace:CookBook.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="700" Width="1080">
     <Window.Resources>
         
     </Window.Resources>
@@ -31,7 +31,6 @@
             </Menu>
         </DockPanel>
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
-        <Button Content="Button" HorizontalAlignment="Left" Margin="350,218,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
 
 
     </Grid>

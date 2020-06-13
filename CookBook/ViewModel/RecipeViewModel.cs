@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CookBook.ViewModel
@@ -44,13 +45,27 @@ namespace CookBook.ViewModel
                 }
         }
 
+        private bool _showControls;
+
+        public bool ShowControls
+        {
+            get { return _showControls; }
+            set
+            {
+                if(_showControls != value)
+                {
+                    _showControls = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         public ObservableCollection<Recipe> recipeItems { get; set; }
 
         public ObservableCollection<RecipeIngredient> recipeIngredientItems { get; set; }
 
         private Recipe _selectedRecipe;
-
 
         public Recipe selectedRecipe
         {
@@ -60,9 +75,12 @@ namespace CookBook.ViewModel
                 _selectedRecipe = value;
                 OnPropertyChanged();
 
-                // read steps and Ingredients when recipe is selected
+                
                 if (selectedRecipe != null)
                 {
+                    ShowControls = true;
+
+                    // read steps and Ingredients when recipe is selected
                     var allRecipeSteps = this.dbActions.BrowseRecipeSteps(selectedRecipe.Id);
                     steps = new ObservableCollection<RecipeStep>(
                         allRecipeSteps.Select(obj2 =>
@@ -71,11 +89,8 @@ namespace CookBook.ViewModel
                             return new RecipeStep { stepNumber = recipeStep.stepNumber, stepInstructions = recipeStep.stepInstructions };
                         })
                         );
-                }
 
-                // read recipeIngredients table when recipe is selected
-                if (selectedRecipe != null)
-                {
+                    // read recipeIngredients table when recipe is selected
                     var allRecipeIngredients = dbActions.BrowseRecipeIngredients(selectedRecipe.Id);
 
                     ingredientItems = new ObservableCollection<RecipeIngredientItem>(
@@ -86,9 +101,21 @@ namespace CookBook.ViewModel
                         })
                         );
                 }
-
             }
         }
+
+        private RecipeStep _selectedRecipeStep;
+        public RecipeStep selectedRecipeStep
+        {
+            get { return _selectedRecipeStep; }
+            set
+            {
+                _selectedRecipeStep = value;
+                OnPropertyChanged();
+            }
+        }
+
+
 
         public RecipeViewModel()
         {
@@ -96,7 +123,13 @@ namespace CookBook.ViewModel
 
             EditRecipeCommand = new RelayCommand(EditRecipe);
 
+            EditRecipeStepCommand = new RelayCommand(EditRecipeStep);
+
+            _showControls = false;
+
             
+
+
             // read form database and store all recipes in a variable
             var allRecipes = this.dbActions.BrowseRecipes();
 
@@ -115,8 +148,22 @@ namespace CookBook.ViewModel
 
         void EditRecipe(object obj)
         {
-            
+            if (selectedRecipe != null)
+            {
+                ShowControls = true;
+            }
 
+        }
+
+        void EditRecipeStep(object obj)
+        {
+            if (selectedRecipeStep != null && !string.IsNullOrEmpty(selectedRecipeStep.stepInstructions) && !string.IsNullOrWhiteSpace(selectedRecipeStep.stepInstructions))
+            {
+                if (dbActions.EditRecipeStep(new CookBookData.Model.RecipeStep { Id = selectedRecipe.Id, recipeId = selectedRecipe.Id, stepNumber = selectedRecipeStep.stepNumber, stepInstructions = selectedRecipeStep.stepInstructions }))
+                {
+                    MessageBox.Show("Recipe Step updated", "Recipe Step updated", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                }
+            }
         }
 
 
@@ -131,6 +178,8 @@ namespace CookBook.ViewModel
 
 
         public ICommand EditRecipeCommand { get; set; }
+
+        public ICommand EditRecipeStepCommand { get; set; }
 
 
         #region INotifyPropertyChanged

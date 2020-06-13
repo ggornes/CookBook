@@ -50,7 +50,6 @@ namespace CookBook.ViewModel
             CurrentViewModel = ViewModels.FirstOrDefault(vm => vm == viewModel);
         }
 
-
         public ICommand RecipesCommand { get; set; }
         public ICommand IngredientsCommand { get; set; }
         public ICommand MeasuresCommand { get; set; }
@@ -68,11 +67,12 @@ namespace CookBook.ViewModel
             RecipesCommand = new RelayCommand(OpenRecipes);
 
             ViewModels.Add(new IngredientsViewModel());
+            ViewModels.Add(new RecipeViewModel());
             // add all
 
 
 
-            CurrentViewModel = ViewModels[0]; // select one default (the first one)
+            CurrentViewModel = ViewModels[1]; // select one default (the first one)
 
             // Mediator.Suscribe();
 
