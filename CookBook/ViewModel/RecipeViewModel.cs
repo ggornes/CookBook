@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace CookBook.ViewModel
 {
-    public class RecipeViewModel: INotifyPropertyChanged
+    public class RecipeViewModel: IViewModel, INotifyPropertyChanged
     {
         private DbActions dbActions;
 

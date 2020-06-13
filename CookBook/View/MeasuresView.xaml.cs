@@ -11,16 +11,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CookBook.View
 {
     /// <summary>
-    /// Interaction logic for MeasuresVirew.xaml
+    /// Interaction logic for MeasuresView.xaml
     /// </summary>
-    public partial class MeasuresVirew : Window
+    public partial class MeasuresView : UserControl
     {
-        public MeasuresVirew()
+        public MeasuresView()
         {
             InitializeComponent();
             DataContext = new MeasuresViewModel();

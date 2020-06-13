@@ -65,6 +65,7 @@ namespace CookBook.ViewModel
 
             MeasuresCommand = new RelayCommand(OpenMeasures);
             IngredientsCommand = new RelayCommand(OpenIngredients);
+            RecipesCommand = new RelayCommand(OpenRecipes);
 
             ViewModels.Add(new IngredientsViewModel());
             // add all
@@ -89,6 +90,10 @@ namespace CookBook.ViewModel
             CurrentViewModel = new IngredientsViewModel();
         }
 
+        public void OpenRecipes(object obj)
+        {
+            CurrentViewModel = new RecipeViewModel();
+        }
 
 
 
