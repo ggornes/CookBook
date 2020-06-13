@@ -86,7 +86,7 @@ namespace CookBook.ViewModel
                         allRecipeSteps.Select(obj2 =>
                         {
                             var recipeStep = (CookBookData.Model.RecipeStep)obj2;
-                            return new RecipeStep { stepNumber = recipeStep.stepNumber, stepInstructions = recipeStep.stepInstructions };
+                            return new RecipeStep { Id = recipeStep.Id, stepNumber = recipeStep.stepNumber, stepInstructions = recipeStep.stepInstructions };
                         })
                         );
 
@@ -159,7 +159,9 @@ namespace CookBook.ViewModel
         {
             if (selectedRecipeStep != null && !string.IsNullOrEmpty(selectedRecipeStep.stepInstructions) && !string.IsNullOrWhiteSpace(selectedRecipeStep.stepInstructions))
             {
-                if (dbActions.EditRecipeStep(new CookBookData.Model.RecipeStep { Id = selectedRecipe.Id, recipeId = selectedRecipe.Id, stepNumber = selectedRecipeStep.stepNumber, stepInstructions = selectedRecipeStep.stepInstructions }))
+                //var test = new CookBookData.Model.RecipeStep { Id = selectedRecipeStep.Id, recipeId = selectedRecipe.Id, stepNumber = selectedRecipeStep.stepNumber, stepInstructions = selectedRecipeStep.stepInstructions };
+
+                if (dbActions.EditRecipeStep(new CookBookData.Model.RecipeStep { Id = selectedRecipeStep.Id, recipeId = selectedRecipe.Id, stepNumber = selectedRecipeStep.stepNumber, stepInstructions = selectedRecipeStep.stepInstructions }))
                 {
                     MessageBox.Show("Recipe Step updated", "Recipe Step updated", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                 }
