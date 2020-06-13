@@ -152,10 +152,33 @@ namespace CookBookData.Model.DbActions
             //        return new object[] { };
             //    }
             //}
+
+        }
+
+        public bool EditRecipeStep(RecipeStep step)
+        {
+            if (step == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(step).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not edit Recipe Step");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
         }
 
 
-        public object[] BrowseRecipes()
+            public object[] BrowseRecipes()
         {
             using (var context = new CookBookContext())
             {
