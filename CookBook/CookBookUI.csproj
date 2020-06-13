@@ -116,11 +116,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Mediator\Mediator.cs" />
     <Compile Include="UIModels\RecipeStep.cs" />
     <Compile Include="ViewModel\AddIngredientsViewModel.cs" />
     <Compile Include="ViewModel\AddMeasureViewModel.cs" />
     <Compile Include="ViewModel\IngredientsViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\RelayCommand.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MeasuresViewModel.cs" />
     <Compile Include="ViewModel\RecipeViewModel.cs" />
     <Compile Include="View\AddIngredientView.xaml.cs">
@@ -131,6 +134,9 @@
     </Compile>
     <Compile Include="View\IngredientsView.xaml.cs">
       <DependentUpon>IngredientsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MeasuresView.xaml.cs">
       <DependentUpon>MeasuresView.xaml</DependentUpon>
@@ -159,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\IngredientsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
