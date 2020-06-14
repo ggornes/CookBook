@@ -22,6 +22,28 @@ namespace CookBookData.Model.DbActions
         }
 
         #region Recipe
+        public bool EditRecipe(Recipe recipe)
+        {
+            if (recipe == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(recipe).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not edit recipe");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
         public bool AddRecipe(Recipe recipe)
         {
             if (recipe == null) { return false; }

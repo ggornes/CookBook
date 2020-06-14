@@ -258,9 +258,12 @@ namespace CookBook.ViewModel
 
         void EditRecipe(object obj)
         {
-            if (selectedRecipe != null)
+            if (selectedRecipe != null && !string.IsNullOrEmpty(selectedRecipe.name) && !string.IsNullOrWhiteSpace(selectedRecipe.name))
             {
-                ShowControls = true;
+                if (dbActions.EditRecipe(new CookBookData.Model.Recipe { Id = selectedRecipe.Id, name = selectedRecipe.name, prepTime = selectedRecipe.prepTime }))
+                {
+                    MessageBox.Show("Recipe updated", "Recipe updated", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                }
             }
 
         }
