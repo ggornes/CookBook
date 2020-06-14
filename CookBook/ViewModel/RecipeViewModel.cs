@@ -230,7 +230,7 @@ namespace CookBook.ViewModel
         {
             if (selectedRecipeStep != null)
             {
-                if (MessageBox.Show("Do you want to delete the selected measure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Do you want to delete the selected recipe Step?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     if (dbActions.DeleteRecipeStep(new CookBookData.Model.RecipeStep { Id = selectedRecipeStep.Id }))
                     {
