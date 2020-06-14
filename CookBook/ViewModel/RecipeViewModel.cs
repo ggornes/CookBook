@@ -207,11 +207,10 @@ namespace CookBook.ViewModel
             EditRecipeStepCommand = new RelayCommand(EditRecipeStep);
             AddRecipeCommand = new RelayCommand(OpenAddRecipeWindow);
             AddRecipeStepCommand = new RelayCommand(OpenAddRecipeStepWindow);
+            DeleteRecipeStepCommand = new RelayCommand(DeleteRecipeStep);
 
             _showControls = false;
             _showControlsRecipeStepSelected = false;
-
-
 
 
             // read form database and store all recipes in a variable
@@ -225,9 +224,20 @@ namespace CookBook.ViewModel
                     return new Recipe { Id = recipe.Id, name = recipe.name, prepTime = recipe.prepTime };
                 })
                 );
+        }
 
-            
-
+        private void DeleteRecipeStep(object obj)
+        {
+            if (selectedRecipeStep != null)
+            {
+                if (MessageBox.Show("Do you want to delete the selected measure?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    if (dbActions.DeleteRecipeStep(new CookBookData.Model.RecipeStep { Id = selectedRecipeStep.Id }))
+                    {
+                        steps.Remove(selectedRecipeStep);
+                    }
+                }
+            }
         }
 
         private void OpenAddRecipeStepWindow(object obj)
@@ -283,6 +293,7 @@ namespace CookBook.ViewModel
         public ICommand AddRecipeCommand { get; set; }
         public ICommand EditRecipeStepCommand { get; set; }
         public ICommand AddRecipeStepCommand { get; set; }
+        public ICommand DeleteRecipeStepCommand { get; set; }
 
 
         #region INotifyPropertyChanged

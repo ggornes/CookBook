@@ -122,6 +122,28 @@ namespace CookBookData.Model.DbActions
 
         #region RecipeSteps
 
+        public bool DeleteRecipeStep(RecipeStep recipeStep)
+        {
+            if (recipeStep == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(recipeStep).State = EntityState.Deleted;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not delete recipe Step");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
         public object ReadRecipeStep(RecipeStep recipeStep)
         {
             if (recipeStep == null) return false;
