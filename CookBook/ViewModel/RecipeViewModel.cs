@@ -206,6 +206,7 @@ namespace CookBook.ViewModel
             EditRecipeCommand = new RelayCommand(EditRecipe);
             EditRecipeStepCommand = new RelayCommand(EditRecipeStep);
             AddRecipeCommand = new RelayCommand(OpenAddRecipeWindow);
+            AddRecipeStepCommand = new RelayCommand(OpenAddRecipeStepWindow);
 
             _showControls = false;
             _showControlsRecipeStepSelected = false;
@@ -227,6 +228,14 @@ namespace CookBook.ViewModel
 
             
 
+        }
+
+        private void OpenAddRecipeStepWindow(object obj)
+        {
+            var AddRecipeStepVM = new AddRecipeStepViewModel(dbActions, steps, selectedRecipe.Id);
+            var AddRecipeStepV = new AddRecipeStepView(AddRecipeStepVM);
+
+            AddRecipeStepV.Show();
         }
 
         private void OpenAddRecipeWindow(object obj)
@@ -273,6 +282,7 @@ namespace CookBook.ViewModel
         public ICommand EditRecipeCommand { get; set; }
         public ICommand AddRecipeCommand { get; set; }
         public ICommand EditRecipeStepCommand { get; set; }
+        public ICommand AddRecipeStepCommand { get; set; }
 
 
         #region INotifyPropertyChanged

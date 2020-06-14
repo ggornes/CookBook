@@ -1,0 +1,35 @@
+﻿<Window x:Class="CookBook.View.AddRecipeStepView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CookBook.View"
+        mc:Ignorable="d"
+        Title="AddRecipeStepView" Height="450" Width="300">
+    <Grid>
+        <Label Content="Add new Recipe Step" FontSize="28" HorizontalAlignment="Left" Margin="12,13,0,0" VerticalAlignment="Top"/>
+        <Label Content="Step #:" FontSize="20" HorizontalAlignment="Left" Margin="12,100,0,0" VerticalAlignment="Top"/>
+        <TextBox FontSize="20" HorizontalAlignment="Left" Height="37" Margin="147,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+            <TextBox.Text>
+                <Binding Path="stepNumber" UpdateSourceTrigger="PropertyChanged">
+                    <!--<Binding.ValidationRules>
+                        <validation:CategoryNameRule />
+                    </Binding.ValidationRules>-->
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Label Content="Step Instructions:" FontSize="20" HorizontalAlignment="Left" Margin="12,164,0,0" VerticalAlignment="Top"/>
+        <TextBox FontSize="20" HorizontalAlignment="Left" Height="83" Margin="12,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="255">
+            <TextBox.Text>
+                <Binding Path="stepInstructions" UpdateSourceTrigger="PropertyChanged">
+                    <!--<Binding.ValidationRules>
+                        <validation:CategoryNameRule />
+                    </Binding.ValidationRules>-->
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Button x:Name="btnAddRecipeStep" Content="Add" Command="{Binding AddRecipeStepToDBCommand}" HorizontalAlignment="Left" Margin="191,320,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="193,375,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
+
+    </Grid>
+</Window>

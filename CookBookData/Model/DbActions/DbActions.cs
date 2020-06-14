@@ -88,7 +88,7 @@ namespace CookBookData.Model.DbActions
                         String measure = (ingredientsReader.IsDBNull(2)) ? "" : ingredientsReader.GetString(2);
                         //if(!ingredientsReader.IsDBNull(2))
 
-                        
+
 
 
 
@@ -121,6 +121,48 @@ namespace CookBookData.Model.DbActions
         #endregion
 
         #region RecipeSteps
+
+        public object ReadRecipeStep(RecipeStep recipeStep)
+        {
+            if (recipeStep == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.RecipeSteps.FirstOrDefault(e => e.Id == recipeStep.Id || e.stepInstructions == recipeStep.stepInstructions);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not read Recipe step");
+                    Console.WriteLine(ex.Message);
+
+                    return null;
+                }
+            }
+        }
+
+        public bool AddRecipeStep(RecipeStep recipeStep)
+        {
+            if(recipeStep == null) { return false; }
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(recipeStep).State = EntityState.Added;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not add new Recipe Step");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
 
         
         public object[] BrowseRecipeSteps()
