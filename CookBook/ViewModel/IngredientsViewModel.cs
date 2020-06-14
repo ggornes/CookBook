@@ -55,11 +55,17 @@ namespace CookBook.ViewModel
             DeleteIngredientCommand = new RelayCommand(DeleteIngredient);
             EditIngredientCommand = new RelayCommand(EditIngredient);
             AddIngredientCommand = new RelayCommand(OpenAddIngredientWindow);
+            AddRecipeCommand = new RelayCommand(AddRecipe);
 
-            
+
+
 
         }
 
+        private void AddRecipe(object obj)
+        {
+            //this.dbActions.
+        }
         private void OpenAddIngredientWindow(object obj)
         {
             var AddIngVM = new AddIngredientsViewModel(dbActions, ingredientItems);
@@ -70,13 +76,12 @@ namespace CookBook.ViewModel
 
         private void DeleteIngredient(Object ingredient)
         {
-            dbActions = new DbActions();
-
+           
             if (selectedIngredient != null)
             {
                 if (MessageBox.Show("Do you want to delete the selected ingredient?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    if (dbActions.DeleteIngredient(new CookBookData.Model.Ingredient { Id = selectedIngredient.Id }))
+                    if (this.dbActions.DeleteIngredient(new CookBookData.Model.Ingredient { Id = selectedIngredient.Id }))
                     {
                         ingredientItems.Remove(selectedIngredient);
                     }
@@ -101,6 +106,7 @@ namespace CookBook.ViewModel
         public ICommand DeleteIngredientCommand { get; set; }
         public ICommand EditIngredientCommand { get; set; }
         public ICommand AddIngredientCommand { get; set; }
+        public ICommand AddRecipeCommand { get; set; }
 
 
         #region INotifyPropertyChanged

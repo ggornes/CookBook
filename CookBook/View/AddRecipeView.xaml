@@ -1,0 +1,35 @@
+﻿<Window x:Class="CookBook.View.AddRecipeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CookBook.View"
+        mc:Ignorable="d"
+        Title="AddRecipeView" Height="450" Width="300">
+    <Grid>
+        <Label Content="Add new Recipe" FontSize="28" HorizontalAlignment="Left" Margin="12,13,0,0" VerticalAlignment="Top"/>
+        <Label Content="Name:" FontSize="20" HorizontalAlignment="Left" Margin="12,147,0,0" VerticalAlignment="Top"/>
+        <TextBox FontSize="20" HorizontalAlignment="Left" Height="37" Margin="147,147,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+            <TextBox.Text>
+                <Binding Path="name" UpdateSourceTrigger="PropertyChanged">
+                    <!--<Binding.ValidationRules>
+                        <validation:CategoryNameRule />
+                    </Binding.ValidationRules>-->
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Label Content="Prep Time:" FontSize="20" HorizontalAlignment="Left" Margin="12,206,0,0" VerticalAlignment="Top"/>
+        <TextBox FontSize="20" HorizontalAlignment="Left" Height="37" Margin="147,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+            <TextBox.Text>
+                <Binding Path="prepTime" UpdateSourceTrigger="PropertyChanged">
+                    <!--<Binding.ValidationRules>
+                        <validation:CategoryNameRule />
+                    </Binding.ValidationRules>-->
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Button x:Name="btnAddIngredient" Content="Add" Command="{Binding AddRecipeToDBCommand}" HorizontalAlignment="Left" Margin="124,280,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="193,375,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
+
+    </Grid>
+</Window>

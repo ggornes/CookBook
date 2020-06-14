@@ -31,7 +31,7 @@
         <Label Content="View Recipes" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center"/>
         <Label Content="Recipes" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center"/>
         <Label Content="Ingredients" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center"/>
-        <Label Content="Measures" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <Label Content="Steps" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center"/>
 
         <ListView
             x:Name="lvRecipes"     
@@ -74,8 +74,9 @@
             </ListView.View>
         </ListView>
 
-        <Button Content="Add Recipe" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalAlignment="Center" Width="70" Height="40"/>
-        <Button Content="Add Recipe Ingredient" Visibility="{Binding ShowControls, Converter={StaticResource Converter}}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalAlignment="Center" Width="70" Height="40"/>
+        <Button Content="Add Recipe" Command="{Binding AddRecipeCommand}" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalAlignment="Center" Width="140" Height="40"/>
+        <Button Content="Add Recipe Ingredient" Visibility="{Binding ShowControls, Converter={StaticResource Converter}}" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalAlignment="Center" Width="140" Height="40"/>
+        <Button Content="Add Recipe Step" Visibility="{Binding ShowControls, Converter={StaticResource Converter}}" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalAlignment="Center" Width="140" Height="40"/>
         <!--<Button Content="Edit Recipe" Grid.Column="0" Grid.Row="5" Visibility="{Binding ShowControls, Converter={StaticResource Converter}}" Command="{Binding EditRecipeCommand}" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Center" Width="70" Height="40"/>-->
         <!--<Button Content="Delete Recipe" Grid.Column="0" Grid.Row="6" Visibility="{Binding ShowControls, Converter={StaticResource Converter}}" Grid.RowSpan="3"  HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Center" Width="70" Height="40"/>-->
 
@@ -112,7 +113,7 @@
         </GroupBox>
 
 
-        <GroupBox x:Name="gbRecipeIngredients" Visibility="{Binding ShowControls, Converter={StaticResource Converter}}" HorizontalAlignment="Left" Height="219" Margin="30,10,10,10" Grid.Column="2" Grid.Row="3" Grid.RowSpan="4" VerticalAlignment="Center" Width="230" Grid.ColumnSpan="3">
+        <GroupBox x:Name="gbRecipeIngredients" Visibility="{Binding ShowControlsRecipeIngredientSelected, Converter={StaticResource Converter}}" HorizontalAlignment="Left" Height="219" Margin="30,10,10,10" Grid.Column="2" Grid.Row="3" Grid.RowSpan="4" VerticalAlignment="Center" Width="230" Grid.ColumnSpan="3">
             <GroupBox.Header>
                 Recipe Ingredients
             </GroupBox.Header>
@@ -133,7 +134,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox x:Name="gbRecipeSteps" Visibility="{Binding ShowControls, Converter={StaticResource Converter}}" HorizontalAlignment="Left" Height="219" Margin="80,10,10,10" Grid.Column="4" Grid.Row="3" Grid.RowSpan="4" VerticalAlignment="Center" Width="230" Grid.ColumnSpan="2">
+        <GroupBox x:Name="gbRecipeSteps" Visibility="{Binding ShowControlsRecipeStepSelected, Converter={StaticResource Converter}}" HorizontalAlignment="Left" Height="219" Margin="80,10,10,10" Grid.Column="4" Grid.Row="3" Grid.RowSpan="4" VerticalAlignment="Center" Width="230" Grid.ColumnSpan="2">
             <GroupBox.Header>
                 Recipe Steps
             </GroupBox.Header>
@@ -154,8 +155,8 @@
                 <TextBox Grid.Column="1" Grid.Row="0" Margin="10,10,10,10" Text="{Binding selectedRecipeStep.stepNumber, Mode=TwoWay}"/>
                 <Label Grid.Column="0" Grid.Row="1" Margin="10,10,10,10" Content="Instructions:" Grid.ColumnSpan="2" Grid.RowSpan="4"/>
                 <TextBox Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Text="{Binding selectedRecipeStep.stepInstructions, Mode=TwoWay}"/>
-                <Button Grid.Column="1" Grid.Row="2" Margin="10,10,10,10" Content="Add"/>
-                <Button Command="{Binding EditRecipeStepCommand}" Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" Content="Update"/>
+                <Button Command="{Binding EditRecipeStepCommand}" Grid.Column="1" Grid.Row="2" Margin="10,10,10,10" Content="Update"/>
+                <Button Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" Content="Delete"/>
             </Grid>
         </GroupBox>
 

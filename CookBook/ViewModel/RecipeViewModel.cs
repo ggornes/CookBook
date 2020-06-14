@@ -1,4 +1,5 @@
-﻿using CookBook.ViewModel.Interfaces;
+﻿using CookBook.View;
+using CookBook.ViewModel.Interfaces;
 using CookBookData;
 using CookBookData.Model;
 using CookBookData.Model.DbActions;
@@ -29,6 +30,10 @@ namespace CookBook.ViewModel
                     {
                     _ingredientItems = value;
                         OnPropertyChanged();
+                    if(ingredientItems.Count() == 0)
+                    {
+                        ShowControlsRecipeIngredientSelected = false;
+                    }
                 }
                 }
         }
@@ -55,6 +60,11 @@ namespace CookBook.ViewModel
                     {
                         _steps = value;
                         OnPropertyChanged();
+                    Console.WriteLine("steps {0}", steps.Count());
+                    if (steps.Count() == 0)
+                    {
+                        ShowControlsRecipeStepSelected = false;
+                    }
                     }
                 }
         }
@@ -74,10 +84,38 @@ namespace CookBook.ViewModel
             }
         }
 
+        private bool _showControlsRecipeStepSelected;
+        public bool ShowControlsRecipeStepSelected
+        {
+            get { return _showControlsRecipeStepSelected; }
+            set
+            {
+                if ( _showControlsRecipeStepSelected != value)
+                {
+                    _showControlsRecipeStepSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _showControlsRecipeIngredientSelected;
+        public bool ShowControlsRecipeIngredientSelected
+        {
+            get { return _showControlsRecipeIngredientSelected; }
+            set
+            {
+                if (_showControlsRecipeIngredientSelected != value)
+                {
+                    _showControlsRecipeIngredientSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         public ObservableCollection<Recipe> recipeItems { get; set; }
 
-        public ObservableCollection<RecipeIngredient> recipeIngredientItems { get; set; }
+        public ObservableCollection<RecipeIngredientItem> recipeIngredientItems { get; set; }
 
         private Recipe _selectedRecipe;
 
@@ -137,6 +175,25 @@ namespace CookBook.ViewModel
             {
                 _selectedRecipeStep = value;
                 OnPropertyChanged();
+                if (selectedRecipe != null )
+                {
+                    ShowControlsRecipeStepSelected = true;
+                }                    
+            }
+        }
+
+        private RecipeIngredientItem _selectedRecipeIngredient;
+        public RecipeIngredientItem selectedRecipeIngredient
+        {
+            get { return _selectedRecipeIngredient; }
+            set
+            {
+                _selectedRecipeIngredient = value;
+                OnPropertyChanged();
+                if (selectedRecipe != null)
+                {
+                    ShowControlsRecipeIngredientSelected = true;
+                }
             }
         }
 
@@ -147,12 +204,13 @@ namespace CookBook.ViewModel
             dbActions = new DbActions();
 
             EditRecipeCommand = new RelayCommand(EditRecipe);
-
             EditRecipeStepCommand = new RelayCommand(EditRecipeStep);
+            AddRecipeCommand = new RelayCommand(OpenAddRecipeWindow);
 
             _showControls = false;
+            _showControlsRecipeStepSelected = false;
 
-            
+
 
 
             // read form database and store all recipes in a variable
@@ -169,6 +227,14 @@ namespace CookBook.ViewModel
 
             
 
+        }
+
+        private void OpenAddRecipeWindow(object obj)
+        {
+            var AddRecipeVM = new AddRecipeViewModel(dbActions, recipeItems);
+            var addRecipeView = new AddRecipeView(AddRecipeVM);
+
+            addRecipeView.Show();
         }
 
         void EditRecipe(object obj)
@@ -205,7 +271,7 @@ namespace CookBook.ViewModel
 
 
         public ICommand EditRecipeCommand { get; set; }
-
+        public ICommand AddRecipeCommand { get; set; }
         public ICommand EditRecipeStepCommand { get; set; }
 
 

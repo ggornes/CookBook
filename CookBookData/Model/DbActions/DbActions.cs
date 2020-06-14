@@ -21,6 +21,50 @@ namespace CookBookData.Model.DbActions
             return connection;
         }
 
+        #region Recipe
+        public bool AddRecipe(Recipe recipe)
+        {
+            if (recipe == null) { return false; }
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(recipe).State = EntityState.Added;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not add new Recipe");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
+        public object ReadRecipe(Recipe recipe)
+        {
+            if (recipe == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.Recipes.FirstOrDefault(e => e.Id == recipe.Id || e.name == recipe.name);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not read recipe");
+                    Console.WriteLine(ex.Message);
+
+                    return null;
+                }
+            }
+        }
+
+        #endregion
 
         #region RecipeIngredients
         public List<object> BrowseRecipeIngredients(int selectedRecipeId)
@@ -77,6 +121,8 @@ namespace CookBookData.Model.DbActions
         #endregion
 
         #region RecipeSteps
+
+        
         public object[] BrowseRecipeSteps()
         {
             using (var context = new CookBookContext())
