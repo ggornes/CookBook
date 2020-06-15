@@ -20,8 +20,8 @@ namespace CookBook.ViewModel
     {
         private DbActions dbActions;
 
-        // ingredientItems is the source of the Ingredients ListView.
-        // The itemSource is binded to the selectedRecipe
+        // Recipe - Ingredient List View
+        // The Source is binded to the selectedRecipe
         private ObservableCollection<RecipeIngredientItem> _ingredientItems { get; set; }
         public ObservableCollection<RecipeIngredientItem> ingredientItems
         { 
@@ -30,6 +30,8 @@ namespace CookBook.ViewModel
                     {
                     _ingredientItems = value;
                         OnPropertyChanged();
+                    
+                    // Make Edit Recipe-Ingredients controls visible if an element of the ListView is selected
                     if(ingredientItems.Count() == 0)
                     {
                         ShowControlsRecipeIngredientSelected = false;
@@ -38,6 +40,7 @@ namespace CookBook.ViewModel
                 }
         }
 
+        // Ingredients Combo Box
         private ObservableCollection<Ingredient> _allIngredientItems { get; set; }
         public ObservableCollection<Ingredient> allIngredientItems
         {
@@ -52,6 +55,22 @@ namespace CookBook.ViewModel
             }
         }
 
+        // Measures combo box
+        private ObservableCollection<Measure> _allMeasureItems { get; set; }
+        public ObservableCollection<Measure> allMeasureItems
+        {
+            get { return _allMeasureItems; }
+            set
+            {
+                if (_allMeasureItems != value)
+                {
+                    _allMeasureItems = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Recipe - Step Listview
         private ObservableCollection<RecipeStep> _steps;
         public ObservableCollection<RecipeStep> steps
         {
@@ -112,7 +131,7 @@ namespace CookBook.ViewModel
             }
         }
 
-
+        // Recipe List View
         public ObservableCollection<Recipe> recipeItems { get; set; }
 
         public ObservableCollection<RecipeIngredientItem> recipeIngredientItems { get; set; }
@@ -163,6 +182,16 @@ namespace CookBook.ViewModel
                             return new Ingredient { Id = ingredient.Id, name = ingredient.name };
                         })
                         );
+
+                    // Read All Measures
+                    var allMeasures = dbActions.BrowseMeasures();
+                    allMeasureItems = new ObservableCollection<Measure>(
+                        allMeasures.Select(obj4 =>
+                        {
+                            var measure = (CookBookData.Model.Measure)obj4;
+                            return new Measure { Id = measure.Id, name = measure.name };
+                        })
+                        );
                 }
             }
         }
@@ -175,13 +204,17 @@ namespace CookBook.ViewModel
             {
                 _selectedRecipeStep = value;
                 OnPropertyChanged();
-                if (selectedRecipe != null )
+
+                // To make controls visible, one must select first a recipe step from
+                // the ListView
+                if (selectedRecipe != null)
                 {
                     ShowControlsRecipeStepSelected = true;
-                }                    
+                }
             }
         }
 
+        // Selected from Recipe-Ingredient ListView (ObservableCollection<RecipeIngredient>)
         private RecipeIngredientItem _selectedRecipeIngredient;
         public RecipeIngredientItem selectedRecipeIngredient
         {
@@ -192,31 +225,80 @@ namespace CookBook.ViewModel
                 OnPropertyChanged();
                 if (selectedRecipe != null)
                 {
+                    Console.WriteLine(selectedRecipeIngredient.ingredientName);
                     ShowControlsRecipeIngredientSelected = true;
+
+                    var readRecipeIngredient = this.dbActions.ReadIngredient(new CookBookData.Model.Ingredient { name = selectedRecipeIngredient.ingredientName });
+
+                    trueSelectedRecipeIngredient = (Ingredient)readRecipeIngredient;
+
+                    var readRecipeMeasure = this.dbActions.ReadMeasure(new CookBookData.Model.Measure { name = selectedRecipeIngredient.measure });
+
+                    selectedRecipeMeasure = (Measure)readRecipeMeasure;
+
                 }
+                
+            }
+        }
+
+        private Ingredient _trueSelectedRecipeIngredient;
+        public Ingredient trueSelectedRecipeIngredient
+        {
+            get { return _trueSelectedRecipeIngredient; }
+            set
+            {
+                _trueSelectedRecipeIngredient = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Measure _selectedRecipeMeasure;
+        public Measure selectedRecipeMeasure
+        {
+
+            get { return _selectedRecipeMeasure; }
+            set
+            {
+                _selectedRecipeMeasure = value;
+                OnPropertyChanged();
             }
         }
 
 
 
+
+
         public RecipeViewModel()
         {
+            // Load Data Base methods for doing BREAD/CRUD operations
             dbActions = new DbActions();
 
+            #region Button Action Binding
             EditRecipeCommand = new RelayCommand(EditRecipe);
             EditRecipeStepCommand = new RelayCommand(EditRecipeStep);
+            //EditRecipeIngredientCommand = new RelayCommand(EditIRecipeIngredient);
+
             AddRecipeCommand = new RelayCommand(OpenAddRecipeWindow);
             AddRecipeStepCommand = new RelayCommand(OpenAddRecipeStepWindow);
-            DeleteRecipeStepCommand = new RelayCommand(DeleteRecipeStep);
+            //AddRecipeIngredientCommand = new RelayCommand(OpenAddIngredientWindow);
 
+
+            DeleteRecipeStepCommand = new RelayCommand(DeleteRecipeStep);
+            // DeleteRecipeIngredientCommand = new RelayCommand(DeleteRecipeIngredient);
+            // DeleteRecipeCommand = new RelayCommand(DeleteRecipeCommand);
+            #endregion
+
+
+            // Hides AddIngredient and AddStep buttons until user clicks on a recipe from the list
             _showControls = false;
+            // Make Edit Controls only visible when selecting a recipeStep item from the ListView
             _showControlsRecipeStepSelected = false;
 
 
             // read form database and store all recipes in a variable
             var allRecipes = this.dbActions.BrowseRecipes();
 
-            // update ListView
+            // update Recipe ListView
             recipeItems = new ObservableCollection<Recipe>(
                 allRecipes.Select(obj =>
                 {
@@ -225,6 +307,38 @@ namespace CookBook.ViewModel
                 })
                 );
         }
+
+
+
+
+        #region Add 
+        // Open a new Window view to Add Recipes, Recipe-Ingredients or Recipe-Steps
+
+        public ICommand AddRecipeCommand { get; set; }
+        private void OpenAddRecipeWindow(object obj)
+        {
+            var AddRecipeVM = new AddRecipeViewModel(dbActions, recipeItems);
+            var addRecipeView = new AddRecipeView(AddRecipeVM);
+
+            addRecipeView.Show();
+        }
+
+
+        public ICommand AddRecipeStepCommand { get; set; }
+
+        private void OpenAddRecipeStepWindow(object obj)
+        {
+            var AddRecipeStepVM = new AddRecipeStepViewModel(dbActions, steps, selectedRecipe.Id);
+            var AddRecipeStepV = new AddRecipeStepView(AddRecipeStepVM);
+
+            AddRecipeStepV.Show();
+        }
+
+
+        #endregion
+
+        #region Delete
+        public ICommand DeleteRecipeStepCommand { get; set; }
 
         private void DeleteRecipeStep(object obj)
         {
@@ -240,21 +354,11 @@ namespace CookBook.ViewModel
             }
         }
 
-        private void OpenAddRecipeStepWindow(object obj)
-        {
-            var AddRecipeStepVM = new AddRecipeStepViewModel(dbActions, steps, selectedRecipe.Id);
-            var AddRecipeStepV = new AddRecipeStepView(AddRecipeStepVM);
+        #endregion
 
-            AddRecipeStepV.Show();
-        }
+        #region Edit
 
-        private void OpenAddRecipeWindow(object obj)
-        {
-            var AddRecipeVM = new AddRecipeViewModel(dbActions, recipeItems);
-            var addRecipeView = new AddRecipeView(AddRecipeVM);
-
-            addRecipeView.Show();
-        }
+        public ICommand EditRecipeCommand { get; set; }
 
         void EditRecipe(object obj)
         {
@@ -268,6 +372,8 @@ namespace CookBook.ViewModel
 
         }
 
+        public ICommand EditRecipeStepCommand { get; set; }
+
         void EditRecipeStep(object obj)
         {
             if (selectedRecipeStep != null && !string.IsNullOrEmpty(selectedRecipeStep.stepInstructions) && !string.IsNullOrWhiteSpace(selectedRecipeStep.stepInstructions))
@@ -280,24 +386,7 @@ namespace CookBook.ViewModel
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        public ICommand EditRecipeCommand { get; set; }
-        public ICommand AddRecipeCommand { get; set; }
-        public ICommand EditRecipeStepCommand { get; set; }
-        public ICommand AddRecipeStepCommand { get; set; }
-        public ICommand DeleteRecipeStepCommand { get; set; }
-
+        #endregion
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

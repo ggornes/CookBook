@@ -140,6 +140,26 @@ namespace CookBookData.Model.DbActions
                 }
             }
         }
+
+        public object ReadRecipeIngredient(RecipeIngredientItem recipeIngredientItem)
+        {
+            if (recipeIngredientItem == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.Ingredients.FirstOrDefault(e => e.name == recipeIngredientItem.ingredientName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not read Recipe Ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return null;
+                }
+            }
+        }
         #endregion
 
         #region RecipeSteps
