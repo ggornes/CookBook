@@ -25,6 +25,9 @@
                     <MenuItem x:Name="measuresMenu" Header="Measures" Command="{Binding MeasuresCommand}"/>
                     <!--<MenuItem x:Name="categoryMenu" Header="Manage Categories"/>-->
                     <Separator/>
+                    <MenuItem x:Name="exportMenu" Header="Import from binary data" Command="{Binding ImportCommand}" />
+                    <MenuItem x:Name="importMenu" Header="Export to binary data" Command="{Binding ExportCommand}" />
+                    <Separator/>
                     <MenuItem x:Name="aboutMenu" Header="About"/>
                     <MenuItem x:Name="closeMenu" Header="Close"/>
                 </MenuItem>

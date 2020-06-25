@@ -1,4 +1,5 @@
 ﻿using CookBook.ViewModel;
+using CookBook.ViewModel.Interfaces;
 using CookBookData.Model.DbActions;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,18 @@ namespace CookBook
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : IViewModel
     {
         public MainWindow()
         {
             InitializeComponent();
             DbActions dbActions = new DbActions();
             DataContext = new MainWindowViewModel(dbActions);
+        }
+
+        private void closeMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

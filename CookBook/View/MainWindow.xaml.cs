@@ -1,4 +1,5 @@
 ﻿using CookBook.ViewModel;
+using CookBookData.Model.DbActions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace CookBook.View
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindow();
+            DbActions dbActions = new DbActions();
+            DataContext = new MainWindowViewModel(dbActions);
         }
 
     }

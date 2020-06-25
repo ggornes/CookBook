@@ -111,6 +111,25 @@ namespace CookBookData.Model.DbActions
         #endregion
 
         #region RecipeIngredients
+        public object[] BrowseRecipeIngredients()
+        {
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    object result = context.RecipeIngredients.ToArray();
+
+                    return context.RecipeIngredients.ToArray();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error connecting to database: " + e.Message);
+                    return new object[] { };
+                }
+            }
+        }
+
+
         public List<object> BrowseRecipeIngredients(int selectedRecipeId)
         {
             List<object> allRecipeIngredients = new List<object>();

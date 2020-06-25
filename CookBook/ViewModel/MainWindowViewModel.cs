@@ -1,6 +1,7 @@
 ﻿using CookBook.ViewModel.Interfaces;
 using CookBookData.Model;
 using CookBookData.Model.DbActions;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,11 +10,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CookBook.ViewModel
 {
-    class MainWindowViewModel : IViewModel, INotifyPropertyChanged
+    public class MainWindowViewModel : IViewModel, INotifyPropertyChanged
     {
         private IViewModel _currentViewModel;
         public IViewModel CurrentViewModel
@@ -53,6 +55,8 @@ namespace CookBook.ViewModel
         public ICommand RecipesCommand { get; set; }
         public ICommand IngredientsCommand { get; set; }
         public ICommand MeasuresCommand { get; set; }
+        public ICommand ExportCommand { get; set; }
+        public ICommand ImportCommand { get; set; }
         private DbActions dbActions {get; set;}
 
         //public IAsyncCommand RecipesCommand { get; set; }
@@ -66,6 +70,9 @@ namespace CookBook.ViewModel
             IngredientsCommand = new RelayCommand(OpenIngredients);
             RecipesCommand = new RelayCommand(OpenRecipes);
 
+            ExportCommand = new RelayCommand(Export);
+            ExportCommand = new RelayCommand(Import);
+
             ViewModels.Add(new IngredientsViewModel());
             ViewModels.Add(new RecipeViewModel());
             // add all
@@ -76,7 +83,82 @@ namespace CookBook.ViewModel
 
             // Mediator.Suscribe();
 
+        }
 
+        public void Export(object obj)
+        {
+            var recipes = this.dbActions.BrowseRecipes();
+            List<CookBookData.Model.Recipe> recipesList = new List<Recipe>
+                (
+                    recipes.Select(data =>
+                    {
+                        var recipe = (Recipe)data;
+                        return new Recipe
+                        {
+                            Id = recipe.Id,
+                            name = recipe.name,
+                            prepTime = recipe.prepTime
+                        };
+                    })
+                );
+
+            var recipeIngredients = this.dbActions.BrowseRecipeIngredients();
+            List<RecipeIngredient> ris = new List<RecipeIngredient>
+                (
+                    recipeIngredients.Select(data =>
+                    {
+                        var ri = (RecipeIngredient)data;
+                        return new RecipeIngredient
+                        {
+                            Id = ri.Id,
+                            recipeId = ri.recipeId,
+                            ingredientId = ri.ingredientId,
+                            measureId = ri.measureId,
+                            amount = ri.amount,
+                            recipe = new Recipe
+                            {
+                                Id = ri.recipe.Id,
+                                name = ri.recipe.name
+                            },
+                            ingredient = new Ingredient
+                            {
+                                Id = ri.ingredient.Id,
+                                name = ri.ingredient.name
+                            },
+                            measure = new Measure
+                            {
+                                Id = ri.measure.Id,
+                                name = ri.measure.name
+                            }
+                        };
+                    })
+                );
+
+            var exportDialog = new SaveFileDialog
+            {
+                Title = "Export as binary file",
+                FileName = "CookBookData",
+                Filter = "Binary files (*.bin)|*.bin",
+                DefaultExt = ".bin"
+            };
+
+            if (exportDialog.ShowDialog() == true)
+            {
+                CookBook.Serialiser.Serialiser s = new Serialiser.Serialiser(exportDialog.FileName, recipesList);
+
+                if (s.Serialise())
+                {
+                    MessageBox.Show($"Successfully saved data to {exportDialog.FileName}", "Saved data", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                }
+                else
+                {
+                    MessageBox.Show($"Could not serialise data to {exportDialog.FileName}. Ensure that the data is not corrupted and the program has sufficient permissions for this operation.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                }
+            }
+        }
+
+        public void Import(object obj)
+        {
 
         }
 
