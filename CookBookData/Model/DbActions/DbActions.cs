@@ -183,9 +183,55 @@ namespace CookBookData.Model.DbActions
             }
 
         }
+
+        public bool DeleteRecipeIngredient(RecipeIngredient ri)
+        {
+            if (ri == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(ri).State = EntityState.Deleted;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not delete recipe Ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
+        public bool EditRecipeIngredient(RecipeIngredient ri)
+        {
+            if (ri == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(ri).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not edit Recipe Ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
         #endregion
 
         #region RecipeSteps
+
+
 
         public bool DeleteRecipeStep(RecipeStep recipeStep)
         {
@@ -329,31 +375,6 @@ namespace CookBookData.Model.DbActions
             //}
 
         }
-
-
-        public bool EditRecipeIngredient(RecipeIngredient ri)
-        {
-            if (ri == null) return false;
-
-            using (var context = new CookBookContext())
-            {
-                try
-                {
-                    context.Entry(ri).State = EntityState.Modified;
-                    context.SaveChanges();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Could not edit Recipe Ingredient");
-                    Console.WriteLine(ex.Message);
-
-                    return false;
-                }
-            }
-        }
-
-
         public bool EditRecipeStep(RecipeStep step)
         {
             if (step == null) return false;
