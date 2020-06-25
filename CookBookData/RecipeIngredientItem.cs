@@ -8,6 +8,7 @@ namespace CookBookData
 {
     public class RecipeIngredientItem
     {
+        public int Id { get; set; }
         public string ingredientName { get; set; }
         public int amount { get; set; }
         public string measure { get; set; }

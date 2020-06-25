@@ -98,16 +98,18 @@ namespace CookBookData.Model.DbActions
                 try
                 {
                     connection.Open();
-                    string queryRecipeIngredients = "SELECT i.name AS 'Ingredient', ri.amount AS 'Amount', mu.name AS 'Unit of Measure' FROM recipes r JOIN recipe_ingredients ri on r.id = ri.recipeId JOIN ingredients i on i.id = ri.ingredientId LEFT OUTER JOIN measures mu on mu.id = measureId WHERE r.id = @Id;";
+                    string queryRecipeIngredients = "SELECT i.name AS 'Ingredient', ri.Id AS 'RI Id', ri.amount AS 'Amount', mu.name AS 'Unit of Measure' FROM recipes r JOIN recipe_ingredients ri on r.id = ri.recipeId JOIN ingredients i on i.id = ri.ingredientId LEFT OUTER JOIN measures mu on mu.id = measureId WHERE r.id = @Id;";
                     MySqlCommand getIngredients = new MySqlCommand(queryRecipeIngredients, connection);
                     getIngredients.Parameters.Add(new MySqlParameter("Id", selectedRecipeId));
                     MySqlDataReader ingredientsReader;
                     ingredientsReader = getIngredients.ExecuteReader();
                     while (ingredientsReader.Read())
                     {
+                        
                         String ingredientName = ingredientsReader.GetString(0);
-                        int amount = ingredientsReader.GetInt32(1);
-                        String measure = (ingredientsReader.IsDBNull(2)) ? "" : ingredientsReader.GetString(2);
+                        int Id = ingredientsReader.GetInt32(1);
+                        int amount = ingredientsReader.GetInt32(2);
+                        String measure = (ingredientsReader.IsDBNull(3)) ? "" : ingredientsReader.GetString(3);
                         //if(!ingredientsReader.IsDBNull(2))
 
 
@@ -115,7 +117,7 @@ namespace CookBookData.Model.DbActions
 
 
                         // create instance of RecipeStepsUIModel and add it to a list or array
-                        var recipeIngredient = new RecipeIngredientItem { ingredientName = ingredientName, amount = amount, measure = measure };
+                        var recipeIngredient = new RecipeIngredientItem { Id = Id, ingredientName = ingredientName, amount = amount, measure = measure };
                         allRecipeIngredients.Add(recipeIngredient);
 
                         // recipeStepList.push(recipeStep)
@@ -159,6 +161,27 @@ namespace CookBookData.Model.DbActions
                     return null;
                 }
             }
+        }
+
+        // get the RecipeIngredient from both, recipeId and ingredientId
+        public object ReadRecipeIngredient(Recipe selectedRecipe, Ingredient selectedRecipeIngredient)
+        {
+            if (selectedRecipe == null || selectedRecipeIngredient == null) return false;
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    return context.RecipeIngredients.FirstOrDefault(e => (e.Id == selectedRecipe.Id && e.ingredientId == selectedRecipeIngredient.Id));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not read Recipe Ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return null;
+                }
+            }
+
         }
         #endregion
 
@@ -307,6 +330,30 @@ namespace CookBookData.Model.DbActions
 
         }
 
+
+        public bool EditRecipeIngredient(RecipeIngredient ri)
+        {
+            if (ri == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(ri).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not edit Recipe Ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
+
         public bool EditRecipeStep(RecipeStep step)
         {
             if (step == null) return false;
@@ -445,6 +492,7 @@ namespace CookBookData.Model.DbActions
             {
                 try
                 {
+                    var test = context.Measures.FirstOrDefault(e => e.name == measure.name);
                     return context.Measures.FirstOrDefault(e => e.Id == measure.Id || e.name == measure.name);
                 }
                 catch (Exception ex)

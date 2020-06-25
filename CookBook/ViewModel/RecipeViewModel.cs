@@ -168,7 +168,7 @@ namespace CookBook.ViewModel
                         allRecipeIngredients.Select(obj =>
                         {
                             var ing = (CookBookData.RecipeIngredientItem)obj;
-                            return new RecipeIngredientItem { ingredientName = ing.ingredientName, amount = ing.amount, measure = ing.measure };
+                            return new RecipeIngredientItem { Id = ing.Id, ingredientName = ing.ingredientName, amount = ing.amount, measure = ing.measure };
                         })
                         );
 
@@ -225,16 +225,24 @@ namespace CookBook.ViewModel
                 OnPropertyChanged();
                 if (selectedRecipe != null)
                 {
-                    Console.WriteLine(selectedRecipeIngredient.ingredientName);
-                    ShowControlsRecipeIngredientSelected = true;
+                    if (selectedRecipeIngredient != null)
+                    {
+                        Console.WriteLine(selectedRecipeIngredient.ingredientName);
+                        ShowControlsRecipeIngredientSelected = true;
 
-                    var readRecipeIngredient = this.dbActions.ReadIngredient(new CookBookData.Model.Ingredient { name = selectedRecipeIngredient.ingredientName });
+                        var readRecipeIngredient = this.dbActions.ReadIngredient(new CookBookData.Model.Ingredient { name = selectedRecipeIngredient.ingredientName });
 
-                    trueSelectedRecipeIngredient = (Ingredient)readRecipeIngredient;
+                        //var readRecipeIngredient2 = this.dbActions.ReadIngredient(new CookBookData.Model.Ingredient { name = selectedRecipeIngredient.ingredientName }, new CookBookData.Model.Recipe{});
 
-                    var readRecipeMeasure = this.dbActions.ReadMeasure(new CookBookData.Model.Measure { name = selectedRecipeIngredient.measure });
+                        trueSelectedRecipeIngredient = (Ingredient)readRecipeIngredient;
 
-                    selectedRecipeMeasure = (Measure)readRecipeMeasure;
+                        Console.WriteLine(selectedRecipeIngredient.measure);
+
+                        var readRecipeMeasure = this.dbActions.ReadMeasure(new CookBookData.Model.Measure { name = selectedRecipeIngredient.measure });
+
+                        selectedRecipeMeasure = (Measure)readRecipeMeasure;
+                    }
+                    
 
                 }
                 
@@ -276,7 +284,7 @@ namespace CookBook.ViewModel
             #region Button Action Binding
             EditRecipeCommand = new RelayCommand(EditRecipe);
             EditRecipeStepCommand = new RelayCommand(EditRecipeStep);
-            //EditRecipeIngredientCommand = new RelayCommand(EditIRecipeIngredient);
+            EditRecipeIngredientCommand = new RelayCommand(EditIRecipeIngredient);
 
             AddRecipeCommand = new RelayCommand(OpenAddRecipeWindow);
             AddRecipeStepCommand = new RelayCommand(OpenAddRecipeStepWindow);
@@ -370,6 +378,37 @@ namespace CookBook.ViewModel
                 }
             }
 
+        }
+
+        public ICommand EditRecipeIngredientCommand { get; set; }
+
+        void EditIRecipeIngredient(object obj)
+        {
+            // quick validations on the Edit Recipe-Ingredient controls
+            if (
+                selectedRecipeIngredient != null &&
+                !string.IsNullOrEmpty(selectedRecipeIngredient.ingredientName) && !string.IsNullOrWhiteSpace(selectedRecipeIngredient.ingredientName) &&
+                !string.IsNullOrEmpty(selectedRecipeIngredient.measure) && !string.IsNullOrWhiteSpace(selectedRecipeIngredient.measure)
+                )
+            {
+                var test = new CookBookData.Model.RecipeIngredient {Id = selectedRecipeIngredient.Id, recipeId=selectedRecipe.Id, ingredientId = trueSelectedRecipeIngredient.Id, measureId = selectedRecipeMeasure.Id, amount = selectedRecipeIngredient.amount };
+
+                if (dbActions.EditRecipeIngredient(test))
+                {
+                    MessageBox.Show("Recipe Ingredient updated", "Recipe Ingredient updated", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                    // ToDo: reload the recipeIngredients listview
+                    // read recipeIngredients table when recipe is selected
+                    var allRecipeIngredients = dbActions.BrowseRecipeIngredients(selectedRecipe.Id);
+
+                    ingredientItems = new ObservableCollection<RecipeIngredientItem>(
+                        allRecipeIngredients.Select(obj4 =>
+                        {
+                            var ing = (CookBookData.RecipeIngredientItem)obj4;
+                            return new RecipeIngredientItem { Id = ing.Id, ingredientName = ing.ingredientName, amount = ing.amount, measure = ing.measure };
+                        })
+                        );
+                }
+            }
         }
 
         public ICommand EditRecipeStepCommand { get; set; }
