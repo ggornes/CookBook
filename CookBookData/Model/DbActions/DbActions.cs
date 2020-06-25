@@ -86,6 +86,28 @@ namespace CookBookData.Model.DbActions
             }
         }
 
+        public bool DeleteRecipe(Recipe recipe)
+        {
+            if (recipe == null) return false;
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(recipe).State = EntityState.Deleted;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not delete recipe");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
         #endregion
 
         #region RecipeIngredients

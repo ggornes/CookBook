@@ -293,7 +293,7 @@ namespace CookBook.ViewModel
 
             DeleteRecipeStepCommand = new RelayCommand(DeleteRecipeStep);
             DeleteRecipeIngredientCommand = new RelayCommand(DeleteRecipeIngredient);
-            // DeleteRecipeCommand = new RelayCommand(DeleteRecipeCommand);
+            DeleteRecipeCommand = new RelayCommand(DeleteRecipe);
             #endregion
 
 
@@ -368,6 +368,24 @@ namespace CookBook.ViewModel
                     if (dbActions.DeleteRecipeIngredient(new CookBookData.Model.RecipeIngredient { Id = selectedRecipeIngredient.Id }))
                     {
                         ingredientItems.Remove(selectedRecipeIngredient);
+                    }
+                }
+            }
+        }
+
+        public ICommand DeleteRecipeCommand { get; set; }
+        private void DeleteRecipe(object obj)
+        {
+            if (selectedRecipe != null)
+            {
+                if (MessageBox.Show("Do you want to delete the selected recipe ?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    if (dbActions.DeleteRecipe(new CookBookData.Model.Recipe { Id = selectedRecipe.Id }))
+                    {
+                        recipeItems.Remove(selectedRecipe);
+                        // ToDo: clear Recipe-Ingredient and Recipe-Steps listviews
+                        ingredientItems.Clear();
+                        steps.Clear();
                     }
                 }
             }
