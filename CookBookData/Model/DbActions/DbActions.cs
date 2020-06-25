@@ -184,6 +184,28 @@ namespace CookBookData.Model.DbActions
 
         }
 
+        public bool AddRecipeIngredient(RecipeIngredient ri)
+        {
+            if (ri == null) { return false; }
+
+            using (var context = new CookBookContext())
+            {
+                try
+                {
+                    context.Entry(ri).State = EntityState.Added;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Could not add new Recipe Ingredient");
+                    Console.WriteLine(ex.Message);
+
+                    return false;
+                }
+            }
+        }
+
         public bool DeleteRecipeIngredient(RecipeIngredient ri)
         {
             if (ri == null) return false;

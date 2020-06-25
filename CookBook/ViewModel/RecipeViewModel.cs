@@ -335,7 +335,7 @@ namespace CookBook.ViewModel
 
         private void OpenAddRecipeIngredientWindow(object obj)
         {
-            var AddRecipeIngredientVM = new AddRecipeIngredientViewModel(dbActions, allIngredientItems, allMeasureItems, selectedRecipe.Id);
+            var AddRecipeIngredientVM = new AddRecipeIngredientViewModel(dbActions, allIngredientItems, allMeasureItems, ingredientItems, selectedRecipe.Id);
             var AddRecipeIngredientV = new AddRecipeIngredientView(AddRecipeIngredientVM);
 
             AddRecipeIngredientV.Show();
