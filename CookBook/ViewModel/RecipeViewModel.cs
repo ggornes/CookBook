@@ -288,7 +288,7 @@ namespace CookBook.ViewModel
 
             AddRecipeCommand = new RelayCommand(OpenAddRecipeWindow);
             AddRecipeStepCommand = new RelayCommand(OpenAddRecipeStepWindow);
-            //AddRecipeIngredientCommand = new RelayCommand(OpenAddIngredientWindow);
+            AddRecipeIngredientCommand = new RelayCommand(OpenAddRecipeIngredientWindow);
 
 
             DeleteRecipeStepCommand = new RelayCommand(DeleteRecipeStep);
@@ -329,6 +329,16 @@ namespace CookBook.ViewModel
             var addRecipeView = new AddRecipeView(AddRecipeVM);
 
             addRecipeView.Show();
+        }
+
+        public ICommand AddRecipeIngredientCommand { get; set; }
+
+        private void OpenAddRecipeIngredientWindow(object obj)
+        {
+            var AddRecipeIngredientVM = new AddRecipeIngredientViewModel();
+            var AddRecipeIngredientV = new AddRecipeIngredientView(AddRecipeIngredientVM);
+
+            AddRecipeIngredientV.Show();
         }
 
 
