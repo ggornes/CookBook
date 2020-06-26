@@ -189,6 +189,13 @@ namespace CookBook.ViewModel
         public void Import(object obj)
         {
             Console.WriteLine("Import");
+            var exportDialog = new SaveFileDialog
+            {
+                Title = "Export as binary file",
+                FileName = "CookBookData",
+                Filter = "Binary files (*.bin)|*.bin",
+                DefaultExt = ".bin"
+            };
         }
 
         public void OpenMeasures(object obj)
