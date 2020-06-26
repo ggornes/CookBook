@@ -87,21 +87,20 @@ namespace CookBook.ViewModel
 
         public void Export(object obj)
         {
-            Console.WriteLine("Exporttt");
             var recipes = this.dbActions.BrowseRecipes();
-            //List<CookBookData.Model.Recipe> recipesList = new List<Recipe>
-            //    (
-            //        recipes.Select(data =>
-            //        {
-            //            var recipe = (Recipe)data;
-            //            return new Recipe
-            //            {
-            //                Id = recipe.Id,
-            //                name = recipe.name,
-            //                prepTime = recipe.prepTime
-            //            };
-            //        })
-            //    );
+            List<CookBookData.Model.Recipe> recipesList = new List<Recipe>
+                (
+                    recipes.Select(data =>
+                    {
+                        var recipe = (Recipe)data;
+                        return new Recipe
+                        {
+                            Id = recipe.Id,
+                            name = recipe.name,
+                            prepTime = recipe.prepTime
+                        };
+                    })
+                );
 
             var ingredients = this.dbActions.BrowseIngredients();
             var ingredientsList = new List<Ingredient>
@@ -117,37 +116,52 @@ namespace CookBook.ViewModel
                     })
                 );
 
+            var measures = this.dbActions.BrowseMeasures();
+            var measureList = new List<Measure>
+                (
+                    measures.Select(data =>
+                    {
+                        var measure = (Measure)data;
+                        return new Measure
+                        {
+                            Id = measure.Id,
+                            name = measure.name
+                        };
+                    })
+                );
+
             var recipeIngredients = this.dbActions.BrowseRecipeIngredients();
-            //List<RecipeIngredient> ris = new List<RecipeIngredient>
-            //    (
-            //        recipeIngredients.Select(data =>
-            //        {
-            //            var ri = (RecipeIngredient)data;
-            //            return new RecipeIngredient
-            //            {
-            //                Id = ri.Id,
-            //                recipeId = ri.recipeId,
-            //                ingredientId = ri.ingredientId,
-            //                measureId = ri.measureId,
-            //                amount = ri.amount,
-            //                recipe = new Recipe
-            //                {
-            //                    Id = ri.recipe.Id,
-            //                    name = ri.recipe.name
-            //                },
-            //                ingredient = new Ingredient
-            //                {
-            //                    Id = ri.ingredient.Id,
-            //                    name = ri.ingredient.name
-            //                },
-            //                measure = new Measure
-            //                {
-            //                    Id = ri.measure.Id,
-            //                    name = ri.measure.name
-            //                }
-            //            };
-            //        })
-            //    );
+            var riList = new List<RecipeIngredient>
+                (
+                    recipeIngredients.Select(data =>
+                    {
+                        var ri = (RecipeIngredient)data;
+                        return new RecipeIngredient
+                        {
+                            Id = ri.Id,
+                            recipeId = ri.recipeId,
+                            ingredientId = ri.ingredientId,
+                            measureId = ri.measureId,
+                            amount = ri.amount,
+                        };
+                    })
+                );
+
+            var recipeSteps = this.dbActions.BrowseRecipeSteps();
+            var rsList = new List<RecipeStep>
+                (
+                    recipeSteps.Select(data =>
+                    {
+                        var rs = (RecipeStep)data;
+                        return new RecipeStep
+                        {
+                            Id = rs.Id,
+                            recipeId = rs.recipeId,
+                            stepNumber = rs.stepNumber,
+                            stepInstructions = rs.stepInstructions
+                        };
+                    })
+                );
 
             var exportDialog = new SaveFileDialog
             {
@@ -159,7 +173,7 @@ namespace CookBook.ViewModel
 
             if (exportDialog.ShowDialog() == true)
             {
-                CookBook.Serialiser.Serialiser s = new Serialiser.Serialiser(exportDialog.FileName, ingredientsList);
+                CookBook.Serialiser.Serialiser s = new Serialiser.Serialiser(exportDialog.FileName, recipesList, ingredientsList, measureList, riList, rsList);
 
                 if (s.Serialise())
                 {

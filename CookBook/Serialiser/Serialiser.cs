@@ -17,6 +17,7 @@ namespace CookBook.Serialiser
 
         private List<Recipe> recipes;
         private List<Ingredient> ingredients;
+        private List<Measure> measures;
         private List<RecipeIngredient> recipeIngredients;
         private List<RecipeStep> recipeSteps;
 
@@ -42,11 +43,13 @@ namespace CookBook.Serialiser
             this.FileName = fileName;
         }
 
-        internal Serialiser(string fileName, List<Recipe> recipes, List<Ingredient> ingredients, List<RecipeIngredient> recipeIngredients, List<RecipeStep> recipeSteps)
+        //internal Serialiser(string fileName, List<Recipe> recipes, List<Ingredient> ingredients, List<RecipeIngredient> recipeIngredients, List<RecipeStep> recipeSteps)
+        internal Serialiser(string fileName, List<Recipe> recipes, List<Ingredient> ingredients, List<Measure> measures, List<RecipeIngredient> recipeIngredients, List<RecipeStep> recipeSteps)
         {
             this.FileName = fileName;
             this.recipes = recipes;
             this.ingredients = ingredients;
+            this.measures = measures;
             this.recipeIngredients = recipeIngredients;
             this.recipeSteps = recipeSteps;
         }
@@ -71,7 +74,7 @@ namespace CookBook.Serialiser
                 BinaryFormatter b = new BinaryFormatter();
 
                 // Merge all models into a single list of objects
-                List<object> merged =ingredients.Cast<object>().ToList();
+                List<object> merged = recipes.Cast<object>().Concat(ingredients.Cast<object>().ToList()).Concat(measures.Cast<object>().ToList()).Concat(recipeIngredients.Cast<object>().ToList()).Concat(recipeSteps.Cast<object>().ToList()).ToList();
 
                 b.Serialize(stream, merged);
 
