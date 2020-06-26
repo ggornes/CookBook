@@ -29,6 +29,12 @@ namespace CookBookData.Model
         public virtual ICollection<RecipeIngredient> recipeIngredients { get; set; }
 
 
+        protected Ingredient(SerializationInfo info, StreamingContext context)
+        {
+            Id = (int)info.GetValue("Id", typeof(int));
+            name = (string)info.GetValue("name", typeof(string));
+        }
+
 
         #region ISerializable
         public void GetObjectData(SerializationInfo info, StreamingContext context)
