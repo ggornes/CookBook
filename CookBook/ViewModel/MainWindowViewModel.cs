@@ -1,4 +1,5 @@
-﻿using CookBook.ViewModel.Interfaces;
+﻿using CookBook.Serialiser;
+using CookBook.ViewModel.Interfaces;
 using CookBookData.Model;
 using CookBookData.Model.DbActions;
 using Microsoft.Win32;
@@ -189,13 +190,64 @@ namespace CookBook.ViewModel
         public void Import(object obj)
         {
             Console.WriteLine("Import");
-            var exportDialog = new SaveFileDialog
+            var importDialog = new SaveFileDialog
             {
-                Title = "Export as binary file",
+                Title = "Import binary file",
                 FileName = "CookBookData",
                 Filter = "Binary files (*.bin)|*.bin",
                 DefaultExt = ".bin"
             };
+
+            if (importDialog.ShowDialog() == true)
+            {
+                Deserialiser d = new Deserialiser(importDialog.FileName);
+
+                List<Recipe> dRecipes;
+                List<Ingredient> dIngredients;
+                List<Measure> dMeasures;
+                List<RecipeIngredient> dRecipeIngredients;
+                List<RecipeStep> dRecipeSteps;
+
+                if (d.Deserialise())
+                {
+                    dRecipes = d.DeserialisedRecipes;
+                    dIngredients = d.DeserialisedIngredients;
+                    dMeasures = d.DeserialisedMeasures;
+                    dRecipeIngredients = d.DeserialisedRecipeIngredients;
+                    dRecipeSteps = d.DeserialisedRecipeSteps;
+
+                    // ToDo: clear DB
+
+                    foreach (var measure in dMeasures)
+                    {
+                        this.dbActions.AddMeasure(new Measure { name = measure.name });
+                    }
+
+                    foreach (var ingredient in dIngredients)
+                    {
+                        this.dbActions.AddIngredient(new Ingredient { name = ingredient.name });
+                    }
+
+                    foreach (var recipe in dRecipes)
+                    {
+                        this.dbActions.AddRecipe(new Recipe { name = recipe.name, prepTime = recipe.prepTime });
+                    }
+
+                    // ToDo: recipeSteps and RecipeIngredients
+
+                    // ToDo: update views
+
+                    MessageBox.Show("Data imported successfully", "Data imported", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                else
+                {
+                    MessageBox.Show("Could not deserialise data", "Deserialisation error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+
+
+            }
         }
 
         public void OpenMeasures(object obj)
