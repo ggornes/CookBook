@@ -178,6 +178,8 @@
                 <Button Command="{Binding DeleteRecipeStepCommand}" Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" Content="Delete"/>
             </Grid>
         </GroupBox>
+        <ComboBox ItemsSource="{Binding sortValues}" SelectedItem="{Binding selectedSortValue, Mode=TwoWay}" HorizontalAlignment="Left" Margin="117,10,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Sort by:" Grid.Column="0" HorizontalAlignment="Left" Margin="28,4,197,5" VerticalAlignment="Center"/>
 
 
 

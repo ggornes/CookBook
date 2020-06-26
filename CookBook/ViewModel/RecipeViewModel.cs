@@ -342,6 +342,47 @@ namespace CookBook.ViewModel
             }
         }
 
+        // Sort Recipes
+        private ObservableCollection<string> _sortValues;
+        public ObservableCollection<string> sortValues
+        {
+            get { return _sortValues; }
+            set
+            {
+                _sortValues = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedSortValue;
+        public string selectedSortValue
+        {
+            get
+            {
+                if (_selectedSortValue == "prepTime")
+                {
+                    searchedRecipeItems = new ObservableCollection<Recipe>(searchedRecipeItems.OrderBy(r => r.prepTime));
+                }
+                else if (_selectedSortValue == "name")
+                {
+                    searchedRecipeItems = new ObservableCollection<Recipe>(searchedRecipeItems.OrderBy(r => r.name));
+                }
+                else
+                {
+                    searchedRecipeItems = new ObservableCollection<Recipe>(searchedRecipeItems.OrderBy(r => r.Id));
+                }
+
+                return _selectedSortValue;
+            }
+
+            set
+            {
+                _selectedSortValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+
 
 
 
@@ -384,6 +425,10 @@ namespace CookBook.ViewModel
                     return new Recipe { Id = recipe.Id, name = recipe.name, prepTime = recipe.prepTime };
                 })
                 );
+
+            // sort
+            sortValues = new ObservableCollection<string> { "Id", "name", "prepTime"};
+            //selectedSortValue = sortValues[0];
         }
 
 
