@@ -29,7 +29,7 @@
             </TextBox.Text>
         </TextBox>
         <Button x:Name="btnAddIngredient" Content="Add" Command="{Binding AddRecipeToDBCommand}" HorizontalAlignment="Left" Margin="124,280,0,0" VerticalAlignment="Top" Width="76"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="193,375,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
+        <Button Content="Close" HorizontalAlignment="Left" Margin="193,375,0,0" VerticalAlignment="Top" Width="74" Click="Button_Click"/>
 
     </Grid>
 </Window>

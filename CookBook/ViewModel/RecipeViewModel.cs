@@ -4,6 +4,7 @@ using CookBookData;
 using CookBookData.Model;
 using CookBookData.Model.DbActions;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -88,6 +89,8 @@ namespace CookBook.ViewModel
                 }
         }
 
+        // show controls
+
         private bool _showControls;
 
         public bool ShowControls
@@ -132,7 +135,24 @@ namespace CookBook.ViewModel
         }
 
         // Recipe List View
-        public ObservableCollection<Recipe> recipeItems { get; set; }
+        private ObservableCollection<Recipe> _searchedRecipeItems { get; set; }
+        public ObservableCollection<Recipe> searchedRecipeItems
+        {
+            get
+            {
+                if (_searchedRecipeItems == null)
+                {
+                    _searchedRecipeItems = new ObservableCollection<Recipe>();
+                }
+
+                return _searchedRecipeItems;
+            }
+            set
+            {
+                _searchedRecipeItems = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<RecipeIngredientItem> recipeIngredientItems { get; set; }
 
@@ -196,6 +216,7 @@ namespace CookBook.ViewModel
             }
         }
 
+        // Selected Recipe Step
         private RecipeStep _selectedRecipeStep;
         public RecipeStep selectedRecipeStep
         {
@@ -214,7 +235,7 @@ namespace CookBook.ViewModel
             }
         }
 
-        // Selected from Recipe-Ingredient ListView (ObservableCollection<RecipeIngredient>)
+        // Selected Recipe Ingredient from Recipe-Ingredient ListView (ObservableCollection<RecipeIngredient>)
         private RecipeIngredientItem _selectedRecipeIngredient;
         public RecipeIngredientItem selectedRecipeIngredient
         {
@@ -249,6 +270,7 @@ namespace CookBook.ViewModel
             }
         }
 
+        // Selected Ingredient
         private Ingredient _trueSelectedRecipeIngredient;
         public Ingredient trueSelectedRecipeIngredient
         {
@@ -260,6 +282,8 @@ namespace CookBook.ViewModel
             }
         }
 
+
+        // Selected Measure
         private Measure _selectedRecipeMeasure;
         public Measure selectedRecipeMeasure
         {
@@ -268,6 +292,52 @@ namespace CookBook.ViewModel
             set
             {
                 _selectedRecipeMeasure = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Search Results
+        private ObservableCollection<Recipe> _recipeItems;
+        public ObservableCollection<Recipe> recipeItems
+        {
+            get
+            {
+                if (_recipeItems == null)
+                {
+                    _recipeItems = new ObservableCollection<Recipe>();
+                }
+
+                searchedRecipeItems = new ObservableCollection<Recipe>(_recipeItems);
+
+                return _recipeItems;
+            }
+
+            set
+            {
+                _recipeItems = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Search String
+        private string _searchString;
+        public string searchString
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_searchString) || !string.IsNullOrWhiteSpace(_searchString))
+                {
+                    searchedRecipeItems = new ObservableCollection<Recipe>(recipeItems.Where(r => r.name.ToLower().Contains(_searchString.ToLower())));
+                }
+                else
+                {
+                    searchedRecipeItems = new ObservableCollection<Recipe>(recipeItems);
+                }
+                return _searchString;
+            }
+            set
+            {
+                _searchString = value;
                 OnPropertyChanged();
             }
         }
@@ -335,10 +405,18 @@ namespace CookBook.ViewModel
 
         private void OpenAddRecipeIngredientWindow(object obj)
         {
-            var AddRecipeIngredientVM = new AddRecipeIngredientViewModel(dbActions, allIngredientItems, allMeasureItems, ingredientItems, selectedRecipe.Id);
-            var AddRecipeIngredientV = new AddRecipeIngredientView(AddRecipeIngredientVM);
+            if (selectedRecipe != null)
+            {
+                var AddRecipeIngredientVM = new AddRecipeIngredientViewModel(dbActions, allIngredientItems, allMeasureItems, ingredientItems, selectedRecipe.Id);
+                var AddRecipeIngredientV = new AddRecipeIngredientView(AddRecipeIngredientVM);
 
-            AddRecipeIngredientV.Show();
+                AddRecipeIngredientV.Show();
+            }
+            else
+            {
+                MessageBox.Show("Please select a Recipe from the list first", "Invalid operation", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
 
 
@@ -346,10 +424,18 @@ namespace CookBook.ViewModel
 
         private void OpenAddRecipeStepWindow(object obj)
         {
-            var AddRecipeStepVM = new AddRecipeStepViewModel(dbActions, steps, selectedRecipe.Id);
-            var AddRecipeStepV = new AddRecipeStepView(AddRecipeStepVM);
+            if (selectedRecipe != null)
+            {
+                var AddRecipeStepVM = new AddRecipeStepViewModel(dbActions, steps, selectedRecipe.Id);
+                var AddRecipeStepV = new AddRecipeStepView(AddRecipeStepVM);
 
-            AddRecipeStepV.Show();
+                AddRecipeStepV.Show();
+            }
+            else
+            {
+                MessageBox.Show("Please select a Recipe from the list first", "Invalid operation", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
 
@@ -383,6 +469,7 @@ namespace CookBook.ViewModel
                     if (dbActions.DeleteRecipe(new CookBookData.Model.Recipe { Id = selectedRecipe.Id }))
                     {
                         recipeItems.Remove(selectedRecipe);
+                        searchedRecipeItems.Remove(selectedRecipe);
                         // ToDo: clear Recipe-Ingredient and Recipe-Steps listviews
                         ingredientItems.Clear();
                         steps.Clear();
