@@ -190,7 +190,7 @@ namespace CookBook.ViewModel
         public void Import(object obj)
         {
             Console.WriteLine("Import");
-            var importDialog = new SaveFileDialog
+            var importDialog = new OpenFileDialog
             {
                 Title = "Import binary file",
                 FileName = "CookBookData",
@@ -220,17 +220,17 @@ namespace CookBook.ViewModel
 
                     foreach (var measure in dMeasures)
                     {
-                        this.dbActions.AddMeasure(new Measure { name = measure.name });
+                        //this.dbActions.AddMeasure(new Measure { name = measure.name });
                     }
 
                     foreach (var ingredient in dIngredients)
                     {
-                        this.dbActions.AddIngredient(new Ingredient { name = ingredient.name });
+                        //this.dbActions.AddIngredient(new Ingredient { name = ingredient.name });
                     }
 
                     foreach (var recipe in dRecipes)
                     {
-                        this.dbActions.AddRecipe(new Recipe { name = recipe.name, prepTime = recipe.prepTime });
+                        //this.dbActions.AddRecipe(new Recipe { name = recipe.name, prepTime = recipe.prepTime });
                     }
 
                     // ToDo: recipeSteps and RecipeIngredients

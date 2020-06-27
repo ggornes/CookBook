@@ -440,7 +440,7 @@ namespace CookBook.ViewModel
         public ICommand AddRecipeCommand { get; set; }
         private void OpenAddRecipeWindow(object obj)
         {
-            var AddRecipeVM = new AddRecipeViewModel(dbActions, recipeItems);
+            var AddRecipeVM = new AddRecipeViewModel(dbActions, searchedRecipeItems);
             var addRecipeView = new AddRecipeView(AddRecipeVM);
 
             addRecipeView.Show();

@@ -109,10 +109,10 @@ namespace CookBook.ViewModel
 
         public void AddRecipeIngredient(object obj)
         {
-            Console.WriteLine("Selected Recipe ID: {0}", recipeId);
-            Console.WriteLine("Selected Ingredient ID: {0} | Name: {1}", trueSelectedRecipeIngredient.Id, trueSelectedRecipeIngredient.name);
-            Console.WriteLine("Selected Measure ID: {0} | Name: {1}", selectedRecipeMeasure.Id, selectedRecipeMeasure.name);
-            Console.WriteLine("Amount: {0}", amount);
+            //Console.WriteLine("Selected Recipe ID: {0}", recipeId);
+            //Console.WriteLine("Selected Ingredient ID: {0} | Name: {1}", trueSelectedRecipeIngredient.Id, trueSelectedRecipeIngredient.name);
+            //Console.WriteLine("Selected Measure ID: {0} | Name: {1}", selectedRecipeMeasure.Id, selectedRecipeMeasure.name);
+            //Console.WriteLine("Amount: {0}", amount);
 
             int intAmount;
 
@@ -127,7 +127,39 @@ namespace CookBook.ViewModel
             }
             else
             {
-                if (this.dbActions.AddRecipeIngredient(new CookBookData.Model.RecipeIngredient { recipeId = recipeId, ingredientId = trueSelectedRecipeIngredient.Id, measureId = selectedRecipeMeasure.Id, amount = Int32.Parse(amount) }))
+                if (selectedRecipeMeasure == null)
+                {
+                    if (this.dbActions.AddRecipeIngredient(new CookBookData.Model.RecipeIngredient { recipeId = recipeId, ingredientId = trueSelectedRecipeIngredient.Id, measureId = null, amount = Int32.Parse(amount) }))
+                    {
+                        Console.WriteLine("Recipe Ingredient added");
+                        if (MessageBox.Show("Recipe Ingredient added", "Recipe Ingredient added", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK) == MessageBoxResult.OK)
+                        {
+                            // update the recipe-ingredient list view
+                            //var readRecipeIngredient = this.dbActions.ReadRecipeIngredient(new CookBookData.Model.RecipeIngredient { recipeId = recipeId, ingredientId = trueSelectedRecipeIngredient.Id });
+                            var readRecipeIngredient = this.dbActions.ReadIngredient(new CookBookData.Model.Ingredient { name = trueSelectedRecipeIngredient.name });
+                            //var readRecipeMeasure = this.dbActions.ReadMeasure(new CookBookData.Model.Measure { Id = selectedRecipeMeasure.Id });
+
+                            //var readIngredientName = this.dbActions.ReadIngredient()
+
+                            var theId = ((CookBookData.Model.Ingredient)readRecipeIngredient).Id;
+                            var theIngName = ((CookBookData.Model.Ingredient)readRecipeIngredient).name;
+                            //var theMeasure = ((CookBookData.Model.Measure)readRecipeMeasure).name;
+                            var theAmnount = Int32.Parse(amount);
+
+                            // update list
+                            var recipeIngredientItem = new CookBookData.RecipeIngredientItem
+                            {
+                                Id = ((CookBookData.Model.Ingredient)readRecipeIngredient).Id,
+                                ingredientName = ((CookBookData.Model.Ingredient)readRecipeIngredient).name,
+                                //measure = ((CookBookData.Model.Measure)readRecipeMeasure).name,
+                                amount = Int32.Parse(amount)
+                            };
+
+                            this._recipeIngredientItems.Add(recipeIngredientItem);
+                        }
+                    }
+                }
+                else if (this.dbActions.AddRecipeIngredient(new CookBookData.Model.RecipeIngredient { recipeId = recipeId, ingredientId = trueSelectedRecipeIngredient.Id, measureId = selectedRecipeMeasure.Id, amount = Int32.Parse(amount) }))
                 {
                     Console.WriteLine("Recipe Ingredient added");
                     if (MessageBox.Show("Recipe Ingredient added", "Recipe Ingredient added", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK) == MessageBoxResult.OK)
