@@ -52,6 +52,7 @@
                         Id = c.Int(nullable: false, identity: true),
                         name = c.String(nullable: false, maxLength: 32, unicode: false),
                         prepTime = c.Int(nullable: false),
+                        favorite = c.Boolean(),
                     })
                 .PrimaryKey(t => t.Id);
             

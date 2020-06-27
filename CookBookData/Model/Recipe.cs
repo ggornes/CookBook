@@ -23,6 +23,7 @@ namespace CookBookData.Model
         [StringLength(32)]
         public string name { get; set; }
         public int prepTime { get; set; }
+        public bool? favorite { get; set; }
         public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
         public virtual ICollection<RecipeStep> recipeSteps { get; set; }
 

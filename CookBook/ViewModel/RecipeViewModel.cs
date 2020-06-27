@@ -422,7 +422,7 @@ namespace CookBook.ViewModel
                 allRecipes.Select(obj =>
                 {
                     var recipe = (CookBookData.Model.Recipe)obj;
-                    return new Recipe { Id = recipe.Id, name = recipe.name, prepTime = recipe.prepTime };
+                    return new Recipe { Id = recipe.Id, name = recipe.name, prepTime = recipe.prepTime, favorite = recipe.favorite };
                 })
                 );
 
@@ -549,7 +549,7 @@ namespace CookBook.ViewModel
         {
             if (selectedRecipe != null && !string.IsNullOrEmpty(selectedRecipe.name) && !string.IsNullOrWhiteSpace(selectedRecipe.name))
             {
-                if (dbActions.EditRecipe(new CookBookData.Model.Recipe { Id = selectedRecipe.Id, name = selectedRecipe.name, prepTime = selectedRecipe.prepTime }))
+                if (dbActions.EditRecipe(new CookBookData.Model.Recipe { Id = selectedRecipe.Id, name = selectedRecipe.name, prepTime = selectedRecipe.prepTime, favorite = selectedRecipe.favorite }))
                 {
                     MessageBox.Show("Recipe updated", "Recipe updated", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                 }
