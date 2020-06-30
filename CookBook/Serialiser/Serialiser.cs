@@ -74,7 +74,8 @@ namespace CookBook.Serialiser
                 BinaryFormatter b = new BinaryFormatter();
 
                 // Merge all models into a single list of objects
-                List<object> merged = recipes.Cast<object>().Concat(ingredients.Cast<object>().ToList()).Concat(measures.Cast<object>().ToList()).Concat(recipeIngredients.Cast<object>().ToList()).Concat(recipeSteps.Cast<object>().ToList()).ToList();
+                //List<object> merged = recipes.Cast<object>().Concat(ingredients.Cast<object>().ToList()).Concat(measures.Cast<object>().ToList()).Concat(recipeIngredients.Cast<object>().ToList()).Concat(recipeSteps.Cast<object>().ToList()).ToList();
+                List<object> merged = recipes.Cast<object>().ToList();
 
                 b.Serialize(stream, merged);
 
