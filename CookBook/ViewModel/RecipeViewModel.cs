@@ -513,7 +513,7 @@ namespace CookBook.ViewModel
                 {
                     if (dbActions.DeleteRecipe(new CookBookData.Model.Recipe { Id = selectedRecipe.Id }))
                     {
-                        recipeItems.Remove(selectedRecipe);
+                        //recipeItems.Remove(selectedRecipe);
                         searchedRecipeItems.Remove(selectedRecipe);
                         // ToDo: clear Recipe-Ingredient and Recipe-Steps listviews
                         ingredientItems.Clear();
