@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CookBookData.Model.DbActions
 {
-    public class DbActions
+    public class DbActions: IDbActions
     {
         private CookBookContext _cookBookContext;
 

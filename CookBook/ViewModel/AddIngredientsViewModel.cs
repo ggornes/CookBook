@@ -17,7 +17,7 @@ namespace CookBook.ViewModel
     public class AddIngredientsViewModel: INotifyPropertyChanged
     {
         public ICommand AddIngredientToDBCommand { get; set; }
-        private DbActions dbActions;
+        private IDbActions dbActions;
         private ObservableCollection<Ingredient> _ingredientItems;
         private string _name;
         public string name
